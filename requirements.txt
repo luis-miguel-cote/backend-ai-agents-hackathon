@@ -1,0 +1,23 @@
+# Dependencias principales
+langchain-ollama>=0.1.0
+python-dotenv>=1.0.0
+
+# Procesamiento de documentos
+python-docx>=1.1.0
+PyPDF2>=3.0.0
+
+# Interfaz de usuario (opcional)
+rich>=13.0.0
+
+# Utilidades
+typing-extensions>=4.0.0
+dataclasses-json>=0.6.0
+
+# Para desarrollo
+pytest>=7.0.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Nota: Para usar variables de entorno, instala python-dotenv
+# pip install python-dotenv
+# Luego crea un archivo .env basado en env_example.txt
