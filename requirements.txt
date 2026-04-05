@@ -18,6 +18,7 @@ dataclasses-json>=0.6.0
 pytest>=7.0.0
 black>=23.0.0
 flake8>=6.0.0
+requests>=2.31.0
 
 # Nota: Para usar variables de entorno, instala python-dotenv
 # pip install python-dotenv

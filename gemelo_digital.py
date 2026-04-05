@@ -19,6 +19,7 @@ from core.input import procesar_input
 from core.arquitecto import agente_arquitecto
 from core.generador import generar_archivo_individual
 from agentes.agente_devops import generate_deployment_files
+from agentes.agente_assets import descargar_imagenes_proyecto
 
 
 # -- Configuracion -----------------------------------------------------------
@@ -82,6 +83,8 @@ def crear_proyecto_con_progreso(texto_libre: str = None, ruta_documento: str = N
         inicio = time.time()
         try:
             contenido = generar_archivo_individual(archivo, estado["input_usuario"], tipo, sistema_aprendizaje)
+            #_________________________________________________________________________
+        
         except Exception as e:
             print(f"   \u274c Error generando {archivo}: {e}")
             contenido = f"<!-- Error: {e} -->"
@@ -90,7 +93,7 @@ def crear_proyecto_con_progreso(texto_libre: str = None, ruta_documento: str = N
         print(f"      \u23f1\ufe0f  {archivo}: {tiempos_archivos[archivo]:.1f}s")
 
     medidor.finalizar_fase()
-        # Fase extra: DevOps / Deploy_________________________________________________________________________
+        # : DevOps / Deploy_________________________________________________________________________
     deploy_files = generate_deployment_files(estado["tipo_proyecto"])
     estado["archivos_generados"].update(deploy_files)
 
@@ -110,11 +113,14 @@ def crear_proyecto_con_progreso(texto_libre: str = None, ruta_documento: str = N
     ruta_proyecto.mkdir(parents=True, exist_ok=True)
 
     for ruta, contenido in estado["archivos_generados"].items():
+       
         destino = ruta_proyecto / ruta
         destino.parent.mkdir(parents=True, exist_ok=True)
         with open(destino, "w", encoding="utf-8") as f:
             f.write(contenido)
         print(f"   \U0001f4be Guardado: {ruta}")
+#_______________________________________________________________
+    descargar_imagenes_proyecto(ruta_proyecto, estado["input_usuario"])
 
     medidor.finalizar_fase()
 
