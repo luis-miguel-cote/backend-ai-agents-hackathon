@@ -1,0 +1,106 @@
+"""
+Modulo centralizado para llamadas al LLM.
+Configuracion desde .env:
+  LLM_PROVIDER / LLM_MODEL  -> default para todos los agentes
+  REQS_PROVIDER / REQS_MODEL -> override para requerimientos
+  ARQUITECTO_PROVIDER / ARQUITECTO_MODEL -> override para arquitecto
+  GENERADOR_PROVIDER / GENERADOR_MODEL -> override para generador
+"""
+
+import os
+
+
+def _resolver_config(agente: str = None) -> tuple:
+    """Resuelve provider y model: primero busca AGENTE_PROVIDER/MODEL, si no usa LLM_PROVIDER/MODEL."""
+    if agente:
+        prefix = agente.upper()
+        provider = os.environ.get(f"{prefix}_PROVIDER", "").strip()
+        model = os.environ.get(f"{prefix}_MODEL", "").strip()
+        if provider and model:
+            return provider.lower(), model
+
+    provider = os.environ.get("LLM_PROVIDER", "google").lower()
+    model = os.environ.get("LLM_MODEL", "gemini-2.5-flash-lite")
+    return provider, model
+
+
+def llamar_llm(prompt: str, temperature: float = 0.7, agente: str = None) -> str:
+    """Llama al LLM configurado en .env y retorna el texto de respuesta.
+    agente: nombre del agente (reqs, arquitecto, generador) para usar config especifica.
+    """
+    provider, model = _resolver_config(agente)
+
+    if provider == "google":
+        return _llamar_google(prompt, model, temperature)
+    elif provider == "deepseek":
+        return _llamar_deepseek(prompt, model, temperature)
+    elif provider == "anthropic":
+        return _llamar_anthropic(prompt, model, temperature)
+    elif provider == "ollama":
+        return _llamar_ollama(prompt, model, temperature)
+    else:
+        raise ValueError(f"Proveedor LLM no soportado: {provider}")
+
+
+def llamar_llm_structured(prompt, model_schema, temperature: float = 0, agente: str = None):
+    """Llama al LLM con salida estructurada (Pydantic). Solo soportado en Google."""
+    provider, model = _resolver_config(agente)
+
+    # Structured output solo funciona con Google, fallback si es otro proveedor
+    if provider != "google":
+        fallback_model = os.environ.get("LLM_MODEL_STRUCTURED", "gemini-2.5-flash-lite")
+        provider, model = "google", fallback_model
+
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    llm = ChatGoogleGenerativeAI(model=model, temperature=temperature)
+    return llm.with_structured_output(model_schema, method="json_schema")
+
+
+def _llamar_google(prompt: str, model: str, temperature: float) -> str:
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    llm = ChatGoogleGenerativeAI(model=model, temperature=temperature)
+    response = llm.invoke(prompt)
+    return response.content
+
+
+def _llamar_deepseek(prompt: str, model: str, temperature: float) -> str:
+    import requests
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    if not api_key:
+        raise ValueError("DEEPSEEK_API_KEY debe estar definido en .env")
+
+    response = requests.post(
+        "https://api.deepseek.com/chat/completions",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": temperature,
+            "max_tokens": 4096,
+        },
+        timeout=120,
+    )
+    response.raise_for_status()
+    return response.json()["choices"][0]["message"]["content"]
+
+
+def _llamar_anthropic(prompt: str, model: str, temperature: float) -> str:
+    import anthropic
+    client = anthropic.Anthropic()
+    response = client.messages.create(
+        model=model,
+        max_tokens=4096,
+        temperature=temperature,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.content[0].text if response.content else ""
+
+
+def _llamar_ollama(prompt: str, model: str, temperature: float) -> str:
+    from langchain_ollama import ChatOllama
+    llm = ChatOllama(model=model, temperature=temperature)
+    response = llm.invoke(prompt)
+    return response.content

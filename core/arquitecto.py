@@ -1,14 +1,11 @@
 import re
 import json
 from core.progreso import progreso
+from core.llm import llamar_llm
 
 
 def _llamar_llm(prompt: str) -> str:
-    """Llama al LLM (Google GenAI) y retorna el texto de respuesta."""
-    from langchain_google_genai import ChatGoogleGenerativeAI
-    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
-    response = llm.invoke(prompt)
-    return response.content
+    return llamar_llm(prompt, temperature=0, agente="arquitecto")
 
 
 def agente_arquitecto(state, sistema_aprendizaje):

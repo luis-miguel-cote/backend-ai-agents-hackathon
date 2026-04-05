@@ -1,10 +1,10 @@
 """
-Agente de requerimientos: análisis estructurado usando Google GenAI y Pydantic.
+Agente de requerimientos: análisis estructurado con LLM configurable y Pydantic.
 """
 
 def analyze_requirements_google(user_request: str):
-    """Analiza requerimientos usando Google GenAI y Pydantic."""
-    from langchain_google_genai import ChatGoogleGenerativeAI
+    """Analiza requerimientos usando el LLM configurado en .env y Pydantic."""
+    from core.llm import llamar_llm_structured
     from langchain_core.prompts import ChatPromptTemplate
     from pydantic import BaseModel, Field
     from typing import List, Literal
@@ -62,9 +62,8 @@ El resultado debe ser útil para iniciar un desarrollo real.
         ("human", "Petición del usuario:\n{user_request}")
     ])
 
-    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
-    structured_llm = llm.with_structured_output(RequirementsAnalysis, method="json_schema")
-    chain = prompt | structured_llm
+    llm_structured = llamar_llm_structured(prompt, RequirementsAnalysis, temperature=0, agente="reqs")
+    chain = prompt | llm_structured
     return chain.invoke({"user_request": user_request})
 
 
