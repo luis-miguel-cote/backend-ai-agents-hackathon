@@ -6,16 +6,23 @@ from core.progreso import progreso
 def _llamar_llm(prompt: str) -> str:
     """Llama al LLM (Google GenAI) y retorna el texto de respuesta."""
     from langchain_google_genai import ChatGoogleGenerativeAI
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", temperature=0.7)
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.7)
     response = llm.invoke(prompt)
     return response.content
 
 
-def generar_archivo_individual(ruta: str, descripcion: str, tipo: str, sistema_aprendizaje) -> str:
-    """Genera contenido con prompts especificos para mejor calidad."""
+def generar_archivo_individual(ruta: str, descripcion: str, tipo: str, sistema_aprendizaje, archivos_previos: dict = None) -> str:
+    """Genera contenido con prompts especificos para mejor calidad.
+    archivos_previos: dict con archivos ya generados (ej: {"index.html": "<html>..."})
+    para que CSS/JS usen las mismas clases del HTML.
+    """
     progreso.iniciar_generacion_archivo(ruta)
     time.sleep(0.3)
     contexto = sistema_aprendizaje.obtener_contexto_aprendizaje(descripcion)
+    if archivos_previos is None:
+        archivos_previos = {}
+
+    html_generado = archivos_previos.get("index.html", "")
 
     if ruta == "index.html":
         prompt = f"""Eres un disenador web EXPERTO. Genera un HTML COMPLETO y PROFESIONAL.
@@ -42,37 +49,62 @@ Genera SOLO el HTML:"""
             contenido = html_match.group(0)
 
     elif ruta == "css/styles.css":
+        # Extraer clases del HTML para que el CSS las use
+        clases_html = ""
+        if html_generado:
+            clases_encontradas = re.findall(r'class="([^"]+)"', html_generado)
+            clases_unicas = sorted(set(" ".join(clases_encontradas).split()))
+            clases_html = f"\n\nCLASES CSS USADAS EN EL HTML (debes estilizar TODAS estas):\n{', '.join('.' + c for c in clases_unicas)}"
+
         prompt = f"""Eres un disenador CSS EXPERTO. Genera CSS COMPLETO y PROFESIONAL.
 
 DESCRIPCION:
 {descripcion[:300]}
 
 {contexto}
+{clases_html}
+
+{"HTML DE REFERENCIA (usa EXACTAMENTE estas clases):" if html_generado else ""}
+{html_generado[:2000] if html_generado else ""}
 
 REQUISITOS OBLIGATORIOS:
-1. Diseno RESPONSIVE con media queries (mobile, tablet, desktop)
-2. Usa CSS Grid y/o Flexbox para layouts
-3. Variables CSS con :root para colores (paleta armoniosa)
-4. Efectos HOVER en botones y cards
-5. Animaciones suaves (transitions)
-6. Tipografia moderna (Google Fonts)
-7. NO incluir explicaciones, SOLO CSS
+1. Estiliza TODAS las clases que aparecen en el HTML
+2. Diseno RESPONSIVE con media queries (mobile-first: 768px, 1024px)
+3. Variables CSS con :root para colores segun la descripcion del usuario
+4. Usa CSS Grid y/o Flexbox para layouts
+5. Efectos HOVER en botones, cards y enlaces
+6. Animaciones suaves (transitions)
+7. Tipografia moderna con Google Fonts (@import al inicio)
+8. NO incluir bloques de codigo markdown (sin ```)
+9. NO incluir explicaciones, SOLO CSS puro
 
 Genera SOLO el CSS:"""
         contenido = _llamar_llm(prompt)
 
     elif ruta == "js/main.js":
+        # Extraer IDs y clases del HTML para JS preciso
+        ids_html = ""
+        if html_generado:
+            ids_encontrados = re.findall(r'id="([^"]+)"', html_generado)
+            if ids_encontrados:
+                ids_html = f"\n\nIDs EN EL HTML: {', '.join('#' + i for i in ids_encontrados)}"
+
         prompt = f"""Genera JavaScript INTERACTIVO para:
 
 {descripcion[:300]}
+{ids_html}
+
+{"HTML DE REFERENCIA (usa los selectores exactos de este HTML):" if html_generado else ""}
+{html_generado[:1500] if html_generado else ""}
 
 REQUISITOS:
-1. Smooth scroll para navegacion
-2. Validacion de formulario
-3. Menu hamburguesa para movil
+1. Smooth scroll para navegacion usando los IDs del HTML
+2. Validacion de formulario (si existe form en el HTML)
+3. Menu hamburguesa para movil (toggle de clase 'active')
 4. Animaciones al hacer scroll (IntersectionObserver)
 5. NO jQuery, solo Vanilla JS
 6. Codigo dentro de DOMContentLoaded
+7. NO incluir bloques de codigo markdown (sin ```)
 
 Genera SOLO el JavaScript:"""
         contenido = _llamar_llm(prompt)
@@ -92,6 +124,12 @@ Genera SOLO markdown:"""
 
 Genera SOLO el codigo, sin explicaciones:"""
         contenido = _llamar_llm(prompt)
+
+    # Limpiar bloques markdown (```css, ```js, ```html, etc.)
+    contenido = contenido.strip()
+    contenido = re.sub(r'^\s*```\w*\s*\n', '', contenido)
+    contenido = re.sub(r'\n\s*```\s*$', '', contenido)
+    contenido = contenido.strip()
 
     # Validar contenido minimo
     if not contenido or len(contenido.strip()) < 100:

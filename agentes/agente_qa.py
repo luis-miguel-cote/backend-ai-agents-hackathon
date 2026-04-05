@@ -117,3 +117,88 @@ def emit_verdict(passed_tests: int, failed_tests: int, critical_issues: list, wa
         "warnings": warnings,
         "summary": summary,
     }
+
+
+# -- Mapa de extensiones a lenguajes --
+_EXT_LANG = {
+    "html": "html", "css": "css", "js": "javascript",
+    "py": "python", "md": "markdown", "txt": "text",
+}
+
+
+def agente_qa(archivos_generados: dict, descripcion: str) -> dict:
+    """Ejecuta el pipeline completo de QA sobre todos los archivos generados.
+
+    Retorna un dict con el veredicto global y los detalles por archivo.
+    """
+    print("\n🔍 Ejecutando analisis de calidad...")
+
+    todos_los_issues = []
+    todos_los_warnings = []
+    detalles_por_archivo = {}
+    codigo_combinado = ""
+
+    for ruta, contenido in archivos_generados.items():
+        ext = ruta.rsplit(".", 1)[-1] if "." in ruta else "txt"
+        lang = _EXT_LANG.get(ext, ext)
+
+        # Analisis estatico
+        analisis = static_code_analysis(contenido, lang)
+        detalles_por_archivo[ruta] = analisis
+
+        if analisis["issues"]:
+            for issue in analisis["issues"]:
+                todos_los_warnings.append(f"[{ruta}] {issue}")
+            print(f"   ⚠️  {ruta}: {len(analisis['issues'])} observaciones")
+        else:
+            print(f"   ✅ {ruta}: OK ({analisis['lines']} lineas)")
+
+        codigo_combinado += f"\n--- {ruta} ---\n{contenido}\n"
+
+    # Validaciones especificas de estructura web
+    if "index.html" in archivos_generados:
+        html = archivos_generados["index.html"]
+        if "css/styles.css" not in html:
+            todos_los_issues.append("index.html no enlaza css/styles.css")
+        if "js/main.js" not in html:
+            todos_los_warnings.append("index.html no enlaza js/main.js")
+        if "<!DOCTYPE html>" not in html:
+            todos_los_issues.append("index.html no tiene <!DOCTYPE html>")
+        if "<meta name=\"viewport\"" not in html:
+            todos_los_warnings.append("index.html no tiene meta viewport")
+
+    if "css/styles.css" in archivos_generados:
+        css = archivos_generados["css/styles.css"]
+        if ":root" not in css:
+            todos_los_warnings.append("CSS sin variables :root")
+        if "@media" not in css:
+            todos_los_warnings.append("CSS sin media queries (no responsive)")
+
+    # Generar tests y simular
+    test_result = generate_test_cases(descripcion, ["unit", "edge", "security"])
+    sim_result = simulate_test_results(test_result["test_cases"], codigo_combinado)
+
+    # Veredicto final
+    veredicto = emit_verdict(
+        passed_tests=sim_result["passed"],
+        failed_tests=sim_result["failed"],
+        critical_issues=todos_los_issues,
+        warnings=todos_los_warnings,
+        summary=f"Analizados {len(archivos_generados)} archivos, {sim_result['total']} tests simulados",
+    )
+
+    # Mostrar resultado
+    print(f"\n{'='*60}")
+    print(f"🏆 VEREDICTO QA: {veredicto['verdict']}")
+    print(f"{'='*60}")
+    print(f"   Tests: {veredicto['passed']}/{veredicto['passed']+veredicto['failed']} pasaron ({veredicto['pass_rate']}%)")
+    if veredicto["critical_issues"]:
+        print(f"   ❌ Issues criticos:")
+        for issue in veredicto["critical_issues"]:
+            print(f"      - {issue}")
+    if veredicto["warnings"]:
+        print(f"   ⚠️  Observaciones:")
+        for w in veredicto["warnings"][:5]:
+            print(f"      - {w}")
+
+    return veredicto

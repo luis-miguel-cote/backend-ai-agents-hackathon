@@ -6,7 +6,7 @@ from core.progreso import progreso
 def _llamar_llm(prompt: str) -> str:
     """Llama al LLM (Google GenAI) y retorna el texto de respuesta."""
     from langchain_google_genai import ChatGoogleGenerativeAI
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", temperature=0)
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
     response = llm.invoke(prompt)
     return response.content
 
