@@ -9,7 +9,8 @@ import json
 import time
 from pathlib import Path
 from datetime import datetime
-
+from dotenv import load_dotenv
+load_dotenv()
 from config import config
 from core.medicion import medidor
 from core.progreso import progreso
@@ -17,6 +18,7 @@ from core.aprendizaje import SistemaAprendizaje
 from core.input import procesar_input
 from core.arquitecto import agente_arquitecto
 from core.generador import generar_archivo_individual
+from agentes.agente_devops import generate_deployment_files
 
 
 # -- Configuracion -----------------------------------------------------------
@@ -88,6 +90,14 @@ def crear_proyecto_con_progreso(texto_libre: str = None, ruta_documento: str = N
         print(f"      \u23f1\ufe0f  {archivo}: {tiempos_archivos[archivo]:.1f}s")
 
     medidor.finalizar_fase()
+        # Fase extra: DevOps / Deploy_________________________________________________________________________
+    deploy_files = generate_deployment_files(estado["tipo_proyecto"])
+    estado["archivos_generados"].update(deploy_files)
+
+    print("\n🚀 Archivos DevOps generados:")
+    for archivo in deploy_files:
+        print(f"   ⚙️ {archivo}")
+        #---------------------------------------------------------------
 
     print(f"\n\U0001f4c4 TIEMPOS POR ARCHIVO:")
     for archivo, t in tiempos_archivos.items():
