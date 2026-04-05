@@ -4,6 +4,7 @@ Agente de QA: Funciones técnicas de análisis estático, generación de pruebas
 
 def static_code_analysis(code: str, language: str) -> dict:
     """Análisis estático básico del código."""
+    
     issues = []
     if language.lower() in ("python", "py"):
         if "except:" in code and "pass" in code:
