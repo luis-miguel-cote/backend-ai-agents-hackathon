@@ -120,6 +120,31 @@ def emit_verdict(passed_tests: int, failed_tests: int, critical_issues: list, wa
     }
 
 
+def _validar_estructura_html(html: str) -> dict:
+    lower = html.lower()
+    issues = []
+    warnings = []
+
+    if "<!doctype html>" not in lower:
+        issues.append("index.html no tiene <!DOCTYPE html>")
+    if "<html" not in lower or "</html>" not in lower:
+        issues.append("index.html debe estar envuelto en <html>...</html>")
+    if "<head" not in lower or "</head>" not in lower:
+        issues.append("index.html debe contener un <head> completo")
+    if "<body" not in lower or "</body>" not in lower:
+        issues.append("index.html debe contener un <body> completo")
+    if 'href="css/styles.css"' not in lower and "href='css/styles.css'" not in lower:
+        issues.append("index.html no enlaza css/styles.css")
+    if 'src="js/main.js"' not in lower and "src='js/main.js'" not in lower:
+        warnings.append("index.html no enlaza js/main.js")
+    if "<header" not in lower and "<main" not in lower and "<footer" not in lower:
+        warnings.append("Falta estructura semántica básica <header>, <main> o <footer>")
+    if "<nav" not in lower:
+        warnings.append("Falta elemento <nav> para navegar en la página")
+
+    return {"issues": issues, "warnings": warnings}
+
+
 # -- Mapa de extensiones a lenguajes --
 _EXT_LANG = {
     "html": "html", "css": "css", "js": "javascript",
@@ -159,14 +184,11 @@ def agente_qa(archivos_generados: dict, descripcion: str) -> dict:
     # Validaciones especificas de estructura web
     if "index.html" in archivos_generados:
         html = archivos_generados["index.html"]
-        if "css/styles.css" not in html:
-            todos_los_issues.append("index.html no enlaza css/styles.css")
-        if "js/main.js" not in html:
-            todos_los_warnings.append("index.html no enlaza js/main.js")
-        if "<!DOCTYPE html>" not in html:
-            todos_los_issues.append("index.html no tiene <!DOCTYPE html>")
-        if "<meta name=\"viewport\"" not in html:
-            todos_los_warnings.append("index.html no tiene meta viewport")
+        estructura_html = _validar_estructura_html(html)
+        if estructura_html["issues"]:
+            todos_los_issues.extend(estructura_html["issues"])
+        if estructura_html["warnings"]:
+            todos_los_warnings.extend(estructura_html["warnings"])
 
     if "css/styles.css" in archivos_generados:
         css = archivos_generados["css/styles.css"]

@@ -25,21 +25,23 @@ def _resolver_config(agente: str = None) -> tuple:
 
 
 def llamar_llm(prompt: str, temperature: float = 0.7, agente: str = None) -> str:
-    """Llama al LLM configurado en .env y retorna el texto de respuesta.
-    agente: nombre del agente (reqs, arquitecto, generador) para usar config especifica.
-    """
+    """Llama al LLM configurado en .env. Retorna None si LLM no disponible (para fallback)."""
     provider, model = _resolver_config(agente)
 
-    if provider == "google":
-        return _llamar_google(prompt, model, temperature)
-    elif provider == "deepseek":
-        return _llamar_deepseek(prompt, model, temperature)
-    elif provider == "anthropic":
-        return _llamar_anthropic(prompt, model, temperature)
-    elif provider == "ollama":
-        return _llamar_ollama(prompt, model, temperature)
-    else:
-        raise ValueError(f"Proveedor LLM no soportado: {provider}")
+    try:
+        if provider == "google":
+            return _llamar_google(prompt, model, temperature)
+        elif provider == "deepseek":
+            return _llamar_deepseek(prompt, model, temperature)
+        elif provider == "anthropic":
+            return _llamar_anthropic(prompt, model, temperature)
+        elif provider == "ollama":
+            return _llamar_ollama(prompt, model, temperature)
+        else:
+            raise ValueError(f"LLM provider no soportado: {provider}")
+    except Exception as e:
+        print(f"   WARNING: Error LLM: {e}. Retornando None.")
+        return None
 
 
 def llamar_llm_structured(prompt, model_schema, temperature: float = 0, agente: str = None):
@@ -57,10 +59,18 @@ def llamar_llm_structured(prompt, model_schema, temperature: float = 0, agente: 
 
 
 def _llamar_google(prompt: str, model: str, temperature: float) -> str:
-    from langchain_google_genai import ChatGoogleGenerativeAI
-    llm = ChatGoogleGenerativeAI(model=model, temperature=temperature)
-    response = llm.invoke(prompt)
-    return response.content
+    try:
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        api_key = os.environ.get("GOOGLE_API_KEY", "").strip()
+        if not api_key:
+            print("   WARNING: GOOGLE_API_KEY vacia. Retornando None para usar fallback.")
+            return None
+        llm = ChatGoogleGenerativeAI(model=model, temperature=temperature)
+        response = llm.invoke(prompt)
+        return response.content
+    except Exception as e:
+        print(f"   WARNING: Error en Google Gemini: {e}")
+        return None
 
 
 def _llamar_deepseek(prompt: str, model: str, temperature: float) -> str:

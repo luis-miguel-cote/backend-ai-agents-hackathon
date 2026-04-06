@@ -8,6 +8,91 @@ def _llamar_llm(prompt: str) -> str:
     return llamar_llm(prompt, temperature=0.7, agente="generador")
 
 
+def _reparar_html(html: str) -> str:
+    """Asegura que el HTML generado sea completo y tenga cabeza, viewport y enlaces."""
+    html = html.strip()
+    if not html:
+        return html
+
+    if "<!doctype html>" not in html.lower():
+        html = "<!DOCTYPE html>\n" + html
+
+    if "<html" not in html.lower():
+        html = html.replace("<!DOCTYPE html>", "<!DOCTYPE html>\n<html lang=\"es\">\n", 1)
+        if "</html>" not in html.lower():
+            html = html + "\n</html>"
+    elif "</html>" not in html.lower():
+        html += "\n</html>"
+
+    if "<head" not in html.lower():
+        if "<html" in html.lower():
+            html = re.sub(
+                r'(<html[^>]*>)',
+                r"\1\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Proyecto web</title>\n    <link rel=\"stylesheet\" href=\"css/styles.css\">\n</head>",
+                html,
+                flags=re.IGNORECASE,
+                count=1,
+            )
+        else:
+            html = html.replace("<!DOCTYPE html>", "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Proyecto web</title>\n    <link rel=\"stylesheet\" href=\"css/styles.css\">\n</head>\n", 1)
+
+    if "<body" not in html.lower():
+        if "</head>" in html.lower():
+            html = re.sub(r'(</head>)', r"\1\n<body>\n", html, flags=re.IGNORECASE, count=1)
+        else:
+            html = html.replace("</html>", "<body>\n</body>\n</html>")
+
+    if "</body>" not in html.lower():
+        if "</html>" in html.lower():
+            html = re.sub(r'(</html>)', r"</body>\n\1", html, flags=re.IGNORECASE, count=1)
+        else:
+            html += "\n</body>"
+
+    if "<meta charset" not in html.lower():
+        html = re.sub(
+            r'(<head[^>]*>)',
+            r"\1\n    <meta charset=\"UTF-8\">",
+            html,
+            flags=re.IGNORECASE,
+            count=1,
+        )
+    if "name=\"viewport\"" not in html.lower() and "name='viewport'" not in html.lower():
+        html = re.sub(
+            r'(<head[^>]*>)',
+            r"\1\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+            html,
+            flags=re.IGNORECASE,
+            count=1,
+        )
+    if "<title" not in html.lower():
+        html = re.sub(
+            r'(<head[^>]*>)',
+            r"\1\n    <title>Proyecto web</title>",
+            html,
+            flags=re.IGNORECASE,
+            count=1,
+        )
+
+    if "css/styles.css" not in html.lower():
+        if "</head>" in html.lower():
+            html = re.sub(r'(</head>)', r'    <link rel="stylesheet" href="css/styles.css">\n\1', html, flags=re.IGNORECASE, count=1)
+        elif "<head" in html.lower():
+            html = re.sub(r'(<head[^>]*>)', r"\1\n    <link rel=\"stylesheet\" href=\"css/styles.css\">", html, flags=re.IGNORECASE, count=1)
+
+    if "js/main.js" not in html.lower():
+        if "</body>" in html.lower():
+            html = re.sub(r'(</body>)', r'    <script src="js/main.js"></script>\n\1', html, flags=re.IGNORECASE, count=1)
+        elif "</html>" in html.lower():
+            html = re.sub(r'(</html>)', r'    <script src="js/main.js"></script>\n</body>\n\1', html, flags=re.IGNORECASE, count=1)
+        else:
+            html += "\n    <script src=\"js/main.js\"></script>"
+
+    if "</html>" not in html.lower():
+        html += "\n</html>"
+
+    return html
+
+
 def generar_archivo_individual(ruta: str, descripcion: str, tipo: str, sistema_aprendizaje, archivos_previos: dict = None) -> str:
     """Genera contenido con prompts especificos para mejor calidad.
     archivos_previos: dict con archivos ya generados (ej: {"index.html": "<html>..."})
@@ -41,11 +126,20 @@ REQUISITO ABSOLUTAMENTE OBLIGATORIO:
 
 Genera SOLO el HTML:"""
         contenido = _llamar_llm(prompt)
-        html_match = re.search(r'<!DOCTYPE html>.*?</html>', contenido, re.DOTALL)
-        if html_match:
-            contenido = html_match.group(0)
+        if not contenido:
+            print("    LLM no disponible, usando plantilla de respaldo...")
+            contenido = _obtener_plantilla_respaldo(ruta, descripcion)
+        else:
+            html_match = re.search(r'<!DOCTYPE html>.*?</html>', contenido, re.DOTALL | re.IGNORECASE)
+            if html_match:
+                contenido = html_match.group(0)
+            contenido = _reparar_html(contenido)
+            if "<html" not in contenido.lower() or "<head" not in contenido.lower() or "<body" not in contenido.lower() or "</html>" not in contenido.lower():
+                print("    HTML incompleto, usando plantilla de respaldo...")
+                contenido = _obtener_plantilla_respaldo(ruta, descripcion)
 
     elif ruta == "css/styles.css":
+
         # Extraer clases del HTML para que el CSS las use
         clases_html = ""
         if html_generado:
@@ -77,6 +171,9 @@ REQUISITOS OBLIGATORIOS:
 
 Genera SOLO el CSS:"""
         contenido = _llamar_llm(prompt)
+        if not contenido:
+            print("    LLM no disponible, usando plantilla respaldo...")
+            contenido = _obtener_plantilla_respaldo(ruta, descripcion)
 
     elif ruta == "js/main.js":
         # Extraer IDs y clases del HTML para JS preciso
@@ -105,6 +202,9 @@ REQUISITOS:
 
 Genera SOLO el JavaScript:"""
         contenido = _llamar_llm(prompt)
+        if not contenido:
+            print("    LLM no disponible, usando plantilla respaldo...")
+            contenido = _obtener_plantilla_respaldo(ruta, descripcion)
 
     elif ruta == "README.md":
         prompt = f"""Genera README.md profesional para:
@@ -114,6 +214,9 @@ Incluye: titulo, descripcion, tecnologias, instalacion, uso, estructura del proy
 
 Genera SOLO markdown:"""
         contenido = _llamar_llm(prompt)
+        if not contenido:
+            print("    LLM no disponible, usando plantilla respaldo...")
+            contenido = _obtener_plantilla_respaldo(ruta, descripcion)
 
     else:
         prompt = f"""Genera el contenido del archivo '{ruta}' para el proyecto:
@@ -121,6 +224,9 @@ Genera SOLO markdown:"""
 
 Genera SOLO el codigo, sin explicaciones:"""
         contenido = _llamar_llm(prompt)
+        if not contenido:
+            print("    LLM no disponible, usando plantilla respaldo...")
+            contenido = _obtener_plantilla_respaldo(ruta, descripcion)
 
     # Limpiar bloques markdown (```css, ```js, ```html, etc.)
     contenido = contenido.strip()
