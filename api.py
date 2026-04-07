@@ -3,14 +3,17 @@ API REST con FastAPI para el Gemelo Digital.
 Conecta el flujo de generacion de proyectos con el frontend en React.
 """
 
+import io
 import time
 import uuid
+import zipfile
 import threading
 from pathlib import Path
 from datetime import datetime
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -24,7 +27,9 @@ from core.arquitecto import agente_arquitecto
 from core.generador import generar_archivo_individual
 from agentes.agente_devops import generate_deployment_files
 from agentes.agente_assets import descargar_imagenes_proyecto
+from agentes.agente_documentacion import generar_documentacion_pdf
 from agentes.agente_requerimientos import analyze_requirements_google, _construir_resultado
+
 from agentes.agente_qa import agente_qa
 
 # -- Config -------------------------------------------------------------------
@@ -60,6 +65,32 @@ class ResponderRequest(BaseModel):
 
 
 # -- Endpoints ----------------------------------------------------------------
+
+# Endpoint para exponer el pipeline de agentes al frontend
+@app.get("/pipeline")
+def obtener_pipeline():
+    """
+    Devuelve la estructura del pipeline de agentes para el frontend.
+    """
+    nodes = [
+        {"id": "1", "label": "User"},
+        {"id": "2", "label": "Orchestrator"},
+        {"id": "3", "label": "Requirement"},
+        {"id": "4", "label": "Development"},
+        {"id": "5", "label": "QA"},
+        {"id": "7", "label": "Documentación"},
+        {"id": "6", "label": "Output"},
+    ]
+    edges = [
+        {"source": "1", "target": "2"},
+        {"source": "2", "target": "3"},
+        {"source": "2", "target": "4"},
+        {"source": "3", "target": "5"},
+        {"source": "4", "target": "5"},
+        {"source": "5", "target": "7"},
+        {"source": "7", "target": "6"},
+    ]
+    return {"nodes": nodes, "edges": edges}
 
 @app.post("/proyecto/iniciar")
 def iniciar_proyecto(req: IniciarRequest):
@@ -246,6 +277,35 @@ def ver_config():
     }
 
 
+@app.get("/proyecto/{nombre}/descargar")
+def descargar_proyecto(nombre: str):
+    """Descarga un proyecto generado como archivo ZIP."""
+    carpeta = Path(CONFIG["paths"]["proyectos"])
+    ruta_proyecto = carpeta / nombre
+
+    # Prevenir path traversal
+    try:
+        ruta_proyecto.resolve().relative_to(carpeta.resolve())
+    except ValueError:
+        raise HTTPException(status_code=403, detail="Acceso denegado")
+
+    if not ruta_proyecto.exists() or not ruta_proyecto.is_dir():
+        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        for archivo in ruta_proyecto.rglob("*"):
+            if archivo.is_file():
+                zf.write(archivo, archivo.relative_to(ruta_proyecto))
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/zip",
+        headers={"Content-Disposition": f"attachment; filename={nombre}.zip"},
+    )
+
+
 # -- Pipeline interno ---------------------------------------------------------
 
 def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
@@ -271,6 +331,8 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     # Fase 3: Arquitecto
     progreso["fase"] = "Definiendo arquitectura..."
     progreso["porcentaje"] = 10
+    progreso["logs"] = []
+    progreso["logs"].append("🧠 Arquitecto: analizando requerimientos...")
     resultado_arq = agente_arquitecto(estado, sistema_aprendizaje)
 
     estado.update({
@@ -282,11 +344,15 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     if not estado["archivos_por_generar"]:
         sesion["estado_generacion"] = "error"
         progreso["fase"] = "Error: No hay archivos definidos"
+        progreso["logs"].append("❌ Arquitecto: no se definieron archivos")
         return
+
+    progreso["logs"].append(f"🧠 Arquitecto: tipo={estado['tipo_proyecto']}, archivos={estado['archivos_por_generar']}")
 
     # Fase 4: Generacion
     progreso["fase"] = "Generando archivos..."
     progreso["porcentaje"] = 20
+    progreso["logs"].append("⚙️ Generador: iniciando generación de archivos...")
     tiempos_archivos = {}
 
     orden = {"index.html": 0, "css/styles.css": 1, "js/main.js": 2}
@@ -310,25 +376,33 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
         progreso["archivos_listos"].append(archivo)
         progreso["porcentaje"] = 20 + int((i + 1) / total * 50)
         progreso["fase"] = f"Generado: {archivo}"
+        progreso["logs"].append(f"⚙️ Generador: {archivo} ({tiempos_archivos[archivo]:.1f}s)")
 
     # DevOps
-    progreso["fase"] = "Generando archivos DevOps..."
+    progreso["fase"] = "🚀 Generando archivos DevOps..."
     progreso["porcentaje"] = 75
     deploy_files = generate_deployment_files(estado["tipo_proyecto"])
     estado["archivos_generados"].update(deploy_files)
+    archivos_devops = list(deploy_files.keys())
+    progreso["archivos_listos"].extend(archivos_devops)
+    progreso["logs"] = progreso.get("logs", [])
+    progreso["logs"].append(f"🚀 DevOps: generados {', '.join(archivos_devops)}")
 
     # QA
     veredicto_qa = {"verdict": "SKIPPED", "pass_rate": 0, "color": "YELLOW"}
     if not skip_qa:
         progreso["fase"] = "Validando calidad (QA)..."
         progreso["porcentaje"] = 80
+        progreso["logs"].append("🔍 QA: ejecutando análisis de calidad...")
         veredicto_qa = agente_qa(estado["archivos_generados"], estado["input_usuario"])
+        progreso["logs"].append(f"🔍 QA: {veredicto_qa.get('verdict', 'N/A')} — pass rate: {veredicto_qa.get('pass_rate', 0)}%")
 
     estado["revision_aprobada"] = veredicto_qa.get("color") != "RED"
 
     # Guardar en disco
     progreso["fase"] = "Guardando proyecto..."
     progreso["porcentaje"] = 90
+    progreso["logs"].append("💾 Guardando proyecto en disco...")
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     ruta_proyecto = Path(CONFIG["paths"]["proyectos"]) / f"proyecto_{timestamp}"
     ruta_proyecto.mkdir(parents=True, exist_ok=True)
@@ -341,14 +415,29 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
 
     # Assets (imagenes)
     progreso["fase"] = "Descargando imagenes..."
+    progreso["logs"].append("🖼️ Assets: descargando imágenes...")
     descargar_imagenes_proyecto(ruta_proyecto, estado["input_usuario"])
+    progreso["logs"].append("🖼️ Assets: imágenes descargadas")
+
+    # Documentación PDF
+    progreso["fase"] = "Generando documentación PDF..."
+    progreso["porcentaje"] = 93
+    progreso["logs"].append("📄 Documentación: generando PDF...")
+    try:
+        generar_documentacion_pdf(estado, ruta_proyecto, veredicto_qa)
+        progreso["logs"].append("📄 Documentación: PDF generado")
+    except Exception as e:
+        print(f"   WARNING: Error generando PDF: {e}")
+        progreso["logs"].append(f"📄 Documentación: error ({e})")
 
     # Aprendizaje
     sistema_aprendizaje.guardar_ejemplo(estado, ruta_proyecto)
+    progreso["logs"].append("📚 Aprendizaje: ejemplo guardado")
 
     # Resultado final
     progreso["fase"] = "Completado"
     progreso["porcentaje"] = 100
+    progreso["logs"].append("✅ Pipeline completado")
 
     sesion["estado_generacion"] = "completado"
     sesion["resultado"] = {

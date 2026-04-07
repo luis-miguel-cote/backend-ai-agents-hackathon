@@ -14,6 +14,7 @@ uvicorn[standard]>=0.30.0
 # Procesamiento de documentos
 python-docx>=1.1.0
 PyPDF2>=3.0.0
+reportlab>=4.0.0
 
 # Interfaz de usuario (opcional)
 rich>=13.0.0
