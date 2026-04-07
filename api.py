@@ -11,6 +11,8 @@ import threading
 from pathlib import Path
 from datetime import datetime
 
+
+import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -33,6 +35,12 @@ from agentes.agente_requerimientos import analyze_requirements_google, _construi
 from agentes.agente_qa import agente_qa
 
 # -- Config -------------------------------------------------------------------
+# -- Config -------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+
 CONFIG = config.to_dict()
 sistema_aprendizaje = SistemaAprendizaje(CONFIG)
 
@@ -328,7 +336,9 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
         "requerimientos": reqs,
     }
 
+
     # Fase 3: Arquitecto
+    logging.info(f"[PIPELINE] Ejecutando agente: ARQUITECTO para sesión {session_id}")
     progreso["fase"] = "Definiendo arquitectura..."
     progreso["porcentaje"] = 10
     progreso["logs"] = []
@@ -349,7 +359,9 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
 
     progreso["logs"].append(f"🧠 Arquitecto: tipo={estado['tipo_proyecto']}, archivos={estado['archivos_por_generar']}")
 
+
     # Fase 4: Generacion
+    logging.info(f"[PIPELINE] Ejecutando agente: GENERADOR para sesión {session_id}")
     progreso["fase"] = "Generando archivos..."
     progreso["porcentaje"] = 20
     progreso["logs"].append("⚙️ Generador: iniciando generación de archivos...")
@@ -378,7 +390,9 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
         progreso["fase"] = f"Generado: {archivo}"
         progreso["logs"].append(f"⚙️ Generador: {archivo} ({tiempos_archivos[archivo]:.1f}s)")
 
+
     # DevOps
+    logging.info(f"[PIPELINE] Ejecutando agente: DEVOPS para sesión {session_id}")
     progreso["fase"] = "🚀 Generando archivos DevOps..."
     progreso["porcentaje"] = 75
     deploy_files = generate_deployment_files(estado["tipo_proyecto"])
@@ -388,9 +402,11 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     progreso["logs"] = progreso.get("logs", [])
     progreso["logs"].append(f"🚀 DevOps: generados {', '.join(archivos_devops)}")
 
+
     # QA
     veredicto_qa = {"verdict": "SKIPPED", "pass_rate": 0, "color": "YELLOW"}
     if not skip_qa:
+        logging.info(f"[PIPELINE] Ejecutando agente: QA para sesión {session_id}")
         progreso["fase"] = "Validando calidad (QA)..."
         progreso["porcentaje"] = 80
         progreso["logs"].append("🔍 QA: ejecutando análisis de calidad...")
