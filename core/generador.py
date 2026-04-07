@@ -123,6 +123,8 @@ REQUISITO ABSOLUTAMENTE OBLIGATORIO:
 6. NO incluir explicaciones, SOLO el codigo HTML
 7. Diseno MODERNO con paleta de colores atractiva
 8. Incluye clases CSS para todos los elementos
+9. Incluye al menos 3 imágenes usando rutas locales tipo images/banner.jpg
+10. Agrega hero, cards, CTA y sección de contacto
 
 Genera SOLO el HTML:"""
         contenido = _llamar_llm(prompt)
