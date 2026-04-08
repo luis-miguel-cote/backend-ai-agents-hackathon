@@ -119,14 +119,32 @@ def _llamar_deepseek(prompt: str, model: str, temperature: float) -> str:
 
 def _llamar_anthropic(prompt: str, model: str, temperature: float) -> str:
     import anthropic
-    client = anthropic.Anthropic()
+    import os
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    if not api_key:
+        print("   WARNING: ANTHROPIC_API_KEY vacía. Retornando None para usar fallback.")
+        return None
+    client = anthropic.Anthropic(api_key=api_key)
+    # Anthropic espera mensajes como lista de dicts con 'role' y 'content'
     response = client.messages.create(
         model=model,
         max_tokens=4096,
         temperature=temperature,
         messages=[{"role": "user", "content": prompt}],
     )
-    return response.content[0].text if response.content else ""
+    # Claude responde con response.content (lista de bloques), o response['content']
+    # Buscamos el texto plano
+    if hasattr(response, "content") and response.content:
+        # Claude 3: content es lista de bloques, buscamos tipo 'text'
+        for block in response.content:
+            if block.type == "text":
+                return block.text
+        # Si no hay bloques tipo texto, devolvemos el primer bloque como string
+        return str(response.content[0])
+    # Fallback: intentamos acceder como dict
+    if isinstance(response, dict) and "content" in response:
+        return response["content"]
+    return ""
 
 
 def _llamar_ollama(prompt: str, model: str, temperature: float) -> str:
