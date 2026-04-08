@@ -29,18 +29,8 @@ def _delete_session(session_id):
 for f in SESSIONS_DIR.glob("*.json"):
     sid = f.stem
 
-    """
-    API REST con FastAPI para el Gemelo Digital.
-    Conecta el flujo de generacion de proyectos con el frontend en React.
-    """
-
-    import io
-    import time
-    import uuid
-    import zipfile
-    import threading
-    from pathlib import Path
-    from datetime import datetime
+import io
+import time
 import uuid
 import zipfile
 import threading
@@ -49,6 +39,7 @@ from datetime import datetime
 
 
 import logging
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -105,7 +96,9 @@ class IniciarRequest(BaseModel):
     descripcion: str
 
 class ResponderRequest(BaseModel):
-    respuestas: dict  # {"0": "respuesta a pregunta 1", "1": "respuesta a pregunta 2"}
+    respuestas: Optional[dict] = None  # {"0": "respuesta a pregunta 1", "1": "respuesta a pregunta 2"}
+    respuesta: Optional[str] = None
+    pregunta_indice: Optional[int] = None
 
 
 # -- Endpoints ----------------------------------------------------------------
@@ -149,18 +142,26 @@ def iniciar_proyecto(req: IniciarRequest):
         analisis = analyze_requirements_google(contenido)
         resultado_reqs = _construir_resultado(analisis)
     except Exception as e:
+        # Generar preguntas básicas cuando el LLM no está disponible
+        basic_questions = [
+            "¿Cuál es el propósito principal de la aplicación?",
+            "¿Qué tipo de usuarios utilizarán el sistema?",
+            "¿Qué funcionalidades básicas necesitas?",
+            "¿Hay algún requerimiento técnico específico?",
+            "¿Cuál es el alcance del proyecto?"
+        ]
         resultado_reqs = {
             "titulo": "Proyecto web",
             "resumen": contenido[:200],
             "resumen_completo": contenido,
             "total_funcionales": 0,
             "total_no_funcionales": 0,
-            "preguntas_abiertas": [],
-            "siguiente_paso": "Continuar con la informacion disponible",
+            "preguntas_abiertas": basic_questions,
+            "siguiente_paso": "Responde las preguntas para completar el análisis.",
         }
         analisis = None
 
-    preguntas = analisis.open_questions if analisis else []
+    preguntas = analisis.open_questions if analisis else resultado_reqs.get("preguntas_abiertas", [])
 
     sesiones[session_id] = {
         "contenido_original": contenido,
@@ -180,6 +181,7 @@ def iniciar_proyecto(req: IniciarRequest):
         "requerimientos": resultado_reqs,
         "preguntas": preguntas,
         "listo_para_generar": len(preguntas) == 0,
+        "accion": "continuar_flujo" if len(preguntas) == 0 else "siguiente_pregunta",
     }
 
 
@@ -196,37 +198,84 @@ def responder_preguntas(session_id: str, req: ResponderRequest):
             "requerimientos": sesion["requerimientos"],
             "preguntas": [],
             "listo_para_generar": True,
-            "mensaje": "Maximo de rondas alcanzado",
+            "accion": "continuar_flujo",
+            "mensaje": "Máximo de rondas alcanzado",
         }
 
-    # Enriquecer contexto con respuestas
+    previous_preguntas = sesion.get("preguntas", [])
     partes = []
-    for idx, respuesta in req.respuestas.items():
-        pregunta = sesion["preguntas"][int(idx)] if int(idx) < len(sesion["preguntas"]) else f"Pregunta {idx}"
+
+    if req.respuesta is not None:
+        respuesta = req.respuesta.strip()
+        if respuesta == "":
+            return {
+                "requerimientos": sesion["requerimientos"],
+                "preguntas": sesion.get("preguntas", []),
+                "listo_para_generar": sesion.get("listo_para_generar", False),
+                "accion": "reintentar",
+                "mensaje": "No se detectó respuesta válida. Por favor inténtalo de nuevo.",
+            }
+        index = req.pregunta_indice if req.pregunta_indice is not None else 0
+        pregunta = sesion["preguntas"][index] if 0 <= index < len(sesion.get("preguntas", [])) else f"Pregunta {index}"
         partes.append(f"Pregunta: {pregunta}\nRespuesta: {respuesta}")
+    elif req.respuestas:
+        for idx, respuesta in req.respuestas.items():
+            respuesta_text = str(respuesta).strip()
+            if respuesta_text == "":
+                continue
+            pregunta = sesion["preguntas"][int(idx)] if int(idx) < len(sesion["preguntas"]) else f"Pregunta {idx}"
+            partes.append(f"Pregunta: {pregunta}\nRespuesta: {respuesta_text}")
+
+        if not partes:
+            return {
+                "requerimientos": sesion["requerimientos"],
+                "preguntas": sesion.get("preguntas", []),
+                "listo_para_generar": sesion.get("listo_para_generar", False),
+                "accion": "reintentar",
+                "mensaje": "No se detectaron respuestas válidas. Por favor inténtalo de nuevo.",
+            }
+    else:
+        return {
+            "requerimientos": sesion["requerimientos"],
+            "preguntas": sesion.get("preguntas", []),
+            "listo_para_generar": sesion.get("listo_para_generar", False),
+            "accion": "reintentar",
+            "mensaje": "No se encontró ninguna respuesta. Por favor intenta de nuevo.",
+        }
 
     sesion["contexto_acumulado"] += "\n\n--- RESPUESTAS ADICIONALES ---\n" + "\n".join(partes)
     sesion["ronda"] += 1
 
-    # Re-analizar con contexto enriquecido
+
+    # Re-analizar con contexto enriquecido y ACTUALIZAR SIEMPRE el resultado
     try:
         analisis = analyze_requirements_google(sesion["contexto_acumulado"])
         resultado_reqs = _construir_resultado(analisis)
         preguntas = analisis.open_questions
+        sesion["requerimientos"] = resultado_reqs
+        sesion["preguntas"] = preguntas
+        sesion["listo_para_generar"] = len(preguntas) == 0
     except Exception:
-        resultado_reqs = sesion["requerimientos"]
-        preguntas = []
+        # Si falla, mantener el último resultado válido
+        preguntas = sesion.get("preguntas", [])
+        sesion["listo_para_generar"] = len(preguntas) == 0
 
-    sesion["requerimientos"] = resultado_reqs
-    sesion["preguntas"] = preguntas
-    sesion["listo_para_generar"] = len(preguntas) == 0
     sesiones[session_id] = sesion
     _save_session(session_id, sesion)
+
+    if sesion["listo_para_generar"] or sesion["ronda"] >= 3:
+        accion = "continuar_flujo"
+    elif preguntas == previous_preguntas:
+        accion = "repetir_pregunta"
+    else:
+        accion = "siguiente_pregunta"
+
     return {
         "requerimientos": resultado_reqs,
         "preguntas": preguntas,
         "listo_para_generar": sesion["listo_para_generar"],
         "ronda": sesion["ronda"],
+        "accion": accion,
     }
 
 
