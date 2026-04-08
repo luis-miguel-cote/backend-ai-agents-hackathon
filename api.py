@@ -142,24 +142,11 @@ def iniciar_proyecto(req: IniciarRequest):
         analisis = analyze_requirements_google(contenido)
         resultado_reqs = _construir_resultado(analisis)
     except Exception as e:
-        # Generar preguntas básicas cuando el LLM no está disponible
-        basic_questions = [
-            "¿Cuál es el propósito principal de la aplicación?",
-            "¿Qué tipo de usuarios utilizarán el sistema?",
-            "¿Qué funcionalidades básicas necesitas?",
-            "¿Hay algún requerimiento técnico específico?",
-            "¿Cuál es el alcance del proyecto?"
-        ]
-        resultado_reqs = {
-            "titulo": "Proyecto web",
-            "resumen": contenido[:200],
-            "resumen_completo": contenido,
-            "total_funcionales": 0,
-            "total_no_funcionales": 0,
-            "preguntas_abiertas": basic_questions,
-            "siguiente_paso": "Responde las preguntas para completar el análisis.",
-        }
-        analisis = None
+        # Si aún hay error, generar análisis contextualizado como fallback extremo
+        print(f"Error al analizar requerimientos: {e}")
+        from agentes.agente_requerimientos import _generate_contextual_analysis
+        analisis = _generate_contextual_analysis(contenido)
+        resultado_reqs = _construir_resultado(analisis)
 
     preguntas = analisis.open_questions if analisis else resultado_reqs.get("preguntas_abiertas", [])
 
@@ -257,6 +244,7 @@ def responder_preguntas(session_id: str, req: ResponderRequest):
         sesion["listo_para_generar"] = len(preguntas) == 0
     except Exception:
         # Si falla, mantener el último resultado válido
+        resultado_reqs = sesion.get("requerimientos", {})
         preguntas = sesion.get("preguntas", [])
         sesion["listo_para_generar"] = len(preguntas) == 0
 
@@ -266,7 +254,10 @@ def responder_preguntas(session_id: str, req: ResponderRequest):
     if sesion["listo_para_generar"] or sesion["ronda"] >= 3:
         accion = "continuar_flujo"
     elif preguntas == previous_preguntas:
-        accion = "repetir_pregunta"
+        # Si las preguntas no cambian tras una ronda, forzar avance y evitar bucle
+        sesion["listo_para_generar"] = True
+        preguntas = []
+        accion = "continuar_flujo"
     else:
         accion = "siguiente_pregunta"
 
@@ -496,15 +487,43 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     progreso["logs"].append(f"🚀 DevOps: generados {', '.join(archivos_devops)}")
 
 
-    # QA
+
+    # QA + Ciclo de autocorrección
     veredicto_qa = {"verdict": "SKIPPED", "pass_rate": 0, "color": "YELLOW"}
-    if not skip_qa:
-        logging.info(f"[PIPELINE] Ejecutando agente: QA para sesión {session_id}")
-        progreso["fase"] = "Validando calidad (QA)..."
+    autocorreccion_max = 2
+    autocorreccion_intentos = 0
+    while True:
+        if skip_qa:
+            break
+        logging.info(f"[PIPELINE] Ejecutando agente: QA para sesión {session_id} (intento {autocorreccion_intentos+1})")
+        progreso["fase"] = f"Validando calidad (QA)... (intento {autocorreccion_intentos+1})"
         progreso["porcentaje"] = 80
-        progreso["logs"].append("🔍 QA: ejecutando análisis de calidad...")
+        progreso["logs"].append(f"🔍 QA: ejecutando análisis de calidad... (intento {autocorreccion_intentos+1})")
         veredicto_qa = agente_qa(estado["archivos_generados"], estado["input_usuario"])
         progreso["logs"].append(f"🔍 QA: {veredicto_qa.get('verdict', 'N/A')} — pass rate: {veredicto_qa.get('pass_rate', 0)}%")
+        # Si QA aprueba o es solo advertencia, salir
+        if veredicto_qa.get("color") != "RED":
+            break
+        # Si hay errores y no se ha alcanzado el máximo de intentos, intentar autocorrección
+        if autocorreccion_intentos < autocorreccion_max:
+            autocorreccion_intentos += 1
+            progreso["logs"].append(f"♻️ Autocorrección: intentando corregir archivos según diagnóstico QA (intento {autocorreccion_intentos})")
+            try:
+                from core.generador import autocorregir_archivos
+                archivos_corregidos = autocorregir_archivos(
+                    estado["archivos_generados"],
+                    veredicto_qa,
+                    estado["input_usuario"],
+                    sistema_aprendizaje
+                )
+                estado["archivos_generados"].update(archivos_corregidos)
+                progreso["logs"].append(f"♻️ Autocorrección: archivos corregidos: {list(archivos_corregidos.keys())}")
+            except Exception as e:
+                progreso["logs"].append(f"❌ Error en autocorrección: {e}")
+                break
+        else:
+            progreso["logs"].append("❌ QA: Se alcanzó el máximo de intentos de autocorrección. El usuario debe revisar manualmente.")
+            break
 
     estado["revision_aprobada"] = veredicto_qa.get("color") != "RED"
 
@@ -528,6 +547,7 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     descargar_imagenes_proyecto(ruta_proyecto, estado["input_usuario"])
     progreso["logs"].append("🖼️ Assets: imágenes descargadas")
 
+
     # Documentación PDF
     progreso["fase"] = "Generando documentación PDF..."
     progreso["porcentaje"] = 93
@@ -538,6 +558,15 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     except Exception as e:
         print(f"   WARNING: Error generando PDF: {e}")
         progreso["logs"].append(f"📄 Documentación: error ({e})")
+
+    # PDF de logs del pipeline
+    try:
+        from agentes.agente_log_pdf import generar_log_pdf
+        generar_log_pdf(progreso["logs"], ruta_proyecto)
+        progreso["logs"].append("📄 LOGS_PIPELINE.pdf generado")
+    except Exception as e:
+        print(f"   WARNING: Error generando LOGS_PIPELINE.pdf: {e}")
+        progreso["logs"].append(f"📄 Error generando LOGS_PIPELINE.pdf: {e}")
 
     # Aprendizaje
     sistema_aprendizaje.guardar_ejemplo(estado, ruta_proyecto)
