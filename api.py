@@ -1,10 +1,46 @@
-"""
-API REST con FastAPI para el Gemelo Digital.
-Conecta el flujo de generacion de proyectos con el frontend en React.
-"""
 
-import io
-import time
+# --- Persistencia de sesiones en disco ---
+import json
+from pathlib import Path
+# Carpeta para persistencia de sesiones
+SESSIONS_DIR = Path(__file__).parent / "sessions"
+SESSIONS_DIR.mkdir(exist_ok=True)
+
+def _session_file(session_id):
+    return SESSIONS_DIR / f"{session_id}.json"
+
+def _save_session(session_id, data):
+    with open(_session_file(session_id), "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def _load_session(session_id):
+    fpath = _session_file(session_id)
+    if fpath.exists():
+        with open(fpath, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+def _delete_session(session_id):
+    fpath = _session_file(session_id)
+    if fpath.exists():
+        fpath.unlink()
+
+# Al iniciar, cargar sesiones existentes
+for f in SESSIONS_DIR.glob("*.json"):
+    sid = f.stem
+
+    """
+    API REST con FastAPI para el Gemelo Digital.
+    Conecta el flujo de generacion de proyectos con el frontend en React.
+    """
+
+    import io
+    import time
+    import uuid
+    import zipfile
+    import threading
+    from pathlib import Path
+    from datetime import datetime
 import uuid
 import zipfile
 import threading
@@ -137,6 +173,7 @@ def iniciar_proyecto(req: IniciarRequest):
         "resultado": None,
         "progreso": {"fase": "Esperando", "porcentaje": 0, "archivos_listos": []},
     }
+    _save_session(session_id, sesiones[session_id])
 
     return {
         "session_id": session_id,
@@ -149,7 +186,7 @@ def iniciar_proyecto(req: IniciarRequest):
 @app.post("/proyecto/{session_id}/responder")
 def responder_preguntas(session_id: str, req: ResponderRequest):
     """Recibe respuestas a las preguntas abiertas y re-analiza."""
-    sesion = sesiones.get(session_id)
+    sesion = sesiones.get(session_id) or _load_session(session_id)
     if not sesion:
         raise HTTPException(status_code=404, detail="Sesion no encontrada")
 
@@ -183,7 +220,8 @@ def responder_preguntas(session_id: str, req: ResponderRequest):
     sesion["requerimientos"] = resultado_reqs
     sesion["preguntas"] = preguntas
     sesion["listo_para_generar"] = len(preguntas) == 0
-
+    sesiones[session_id] = sesion
+    _save_session(session_id, sesion)
     return {
         "requerimientos": resultado_reqs,
         "preguntas": preguntas,
@@ -195,7 +233,7 @@ def responder_preguntas(session_id: str, req: ResponderRequest):
 @app.post("/proyecto/{session_id}/generar")
 def generar_proyecto(session_id: str, skip_qa: bool = False):
     """Lanza la generacion completa del proyecto en background."""
-    sesion = sesiones.get(session_id)
+    sesion = sesiones.get(session_id) or _load_session(session_id)
     if not sesion:
         raise HTTPException(status_code=404, detail="Sesion no encontrada")
 
@@ -212,17 +250,22 @@ def generar_proyecto(session_id: str, skip_qa: bool = False):
         except Exception as e:
             sesion["estado_generacion"] = "error"
             sesion["progreso"]["fase"] = f"Error: {str(e)}"
+        finally:
+            sesiones[session_id] = sesion
+            _save_session(session_id, sesion)
 
     thread = threading.Thread(target=_generar, daemon=True)
     thread.start()
 
+    sesiones[session_id] = sesion
+    _save_session(session_id, sesion)
     return {"session_id": session_id, "estado": "en_progreso"}
 
 
 @app.get("/proyecto/{session_id}/estado")
 def estado_proyecto(session_id: str):
     """Polling: devuelve el estado actual de la generacion."""
-    sesion = sesiones.get(session_id)
+    sesion = sesiones.get(session_id) or _load_session(session_id)
     if not sesion:
         raise HTTPException(status_code=404, detail="Sesion no encontrada")
 
@@ -233,7 +276,8 @@ def estado_proyecto(session_id: str):
 
     if sesion["estado_generacion"] == "completado":
         resp["resultado"] = sesion["resultado"]
-
+    sesiones[session_id] = sesion
+    _save_session(session_id, sesion)
     return resp
 
 
