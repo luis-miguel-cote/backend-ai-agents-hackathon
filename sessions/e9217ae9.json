@@ -1,0 +1,45 @@
+{
+  "contenido_original": "Crear una aplicacion web para gestionar tareas",
+  "contexto_acumulado": "Crear una aplicacion web para gestionar tareas",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "Crear una aplicacion web para gestionar tareas",
+    "resumen_completo": "Proyecto: Proyecto web\nResumen: Crear una aplicacion web para gestionar tareas",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "1.  ¿Cuál es el nombre oficial de la página web?",
+      "2.  ¿La web representa a una persona, a una empresa, a una institución o a una marca?",
+      "3.  ¿Existe ya un logotipo o identidad visual definida?",
+      "4.  ¿Su principal objetivo es organizar tareas personales, gestionar proyectos de equipo o ambas?",
+      "5.  Los usuarios, ¿deben poder crear, editar, eliminar, marcar como completadas y asignar tareas?",
+      "6.  ¿La página debe mostrar cambios (como una tarea completada) a todos los usuarios involucrados en tiempo real?",
+      "7.  ¿Hay colores corporativos o una paleta de colores preferida definida?",
+      "8.  ¿Debe verse formal, moderna, minimalista, juvenil o institucional?",
+      "9.  ¿La web manejará datos personales de los usuarios (nombre, email, etc.)?",
+      "10. ¿Los usuarios deben iniciar sesión con usuario/contraseña para acceder a sus tareas?"
+    ],
+    "siguiente_paso": "Responde las preguntas abiertas para completar el análisis."
+  },
+  "preguntas": [
+    "1.  ¿Cuál es el nombre oficial de la página web?",
+    "2.  ¿La web representa a una persona, a una empresa, a una institución o a una marca?",
+    "3.  ¿Existe ya un logotipo o identidad visual definida?",
+    "4.  ¿Su principal objetivo es organizar tareas personales, gestionar proyectos de equipo o ambas?",
+    "5.  Los usuarios, ¿deben poder crear, editar, eliminar, marcar como completadas y asignar tareas?",
+    "6.  ¿La página debe mostrar cambios (como una tarea completada) a todos los usuarios involucrados en tiempo real?",
+    "7.  ¿Hay colores corporativos o una paleta de colores preferida definida?",
+    "8.  ¿Debe verse formal, moderna, minimalista, juvenil o institucional?",
+    "9.  ¿La web manejará datos personales de los usuarios (nombre, email, etc.)?",
+    "10. ¿Los usuarios deben iniciar sesión con usuario/contraseña para acceder a sus tareas?"
+  ],
+  "ronda": 1,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

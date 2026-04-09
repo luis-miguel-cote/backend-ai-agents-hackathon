@@ -1,0 +1,33 @@
+{
+  "contenido_original": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.",
+  "contexto_acumulado": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.\n\n--- RESPUESTAS DEL USUARIO ---\nPregunta: ¿Cuál es el objetivo principal del sitio web?\nRespuesta: asesorar financieramente\nPregunta: ¿Qué información o funcionalidades serán prioritarias?\nRespuesta: formulario de mas informacion\nPregunta: ¿Para qué tipo de usuarios se diseña?\nRespuesta: empresas y personas que quieran mejorar sus finanzas\nPregunta: ¿Hay integraciones o conexiones con otros sistemas?\nRespuesta: no",
+  "requerimientos": {
+    "titulo": "Análisis de Sitios web corporativos",
+    "resumen": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E",
+    "resumen_completo": "Proyecto: Análisis de Sitios web corporativos\nResumen: SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E\nTipo de página web: Sitios web corporativos\n\nPreguntas de definición del problema:\n  - ¿Cuál es el objetivo principal del sitio web?\n  - ¿Qué información o funcionalidades serán prioritarias?\n  - ¿Para qué tipo de usuarios se diseña?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Hay integraciones o conexiones con otros sistemas?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Cuál es el objetivo principal del sitio web?",
+      "¿Qué información o funcionalidades serán prioritarias?",
+      "¿Para qué tipo de usuarios se diseña?",
+      "¿Hay integraciones o conexiones con otros sistemas?"
+    ],
+    "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+  },
+  "preguntas": [
+    "¿Cuál es el objetivo principal del sitio web?",
+    "¿Qué información o funcionalidades serán prioritarias?",
+    "¿Para qué tipo de usuarios se diseña?",
+    "¿Hay integraciones o conexiones con otros sistemas?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

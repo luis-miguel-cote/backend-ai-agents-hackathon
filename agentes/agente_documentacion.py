@@ -1,3 +1,66 @@
+def generar_logs_pdf(logs: list, ruta_proyecto: Path) -> str:
+    """Genera un PDF con el historial de logs del flujo del proyecto."""
+    from reportlab.lib.pagesizes import letter
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.colors import HexColor
+    from reportlab.lib.units import inch
+    import datetime
+
+    pdf_path = ruta_proyecto / "LOGS_FLUJO.pdf"
+    doc = SimpleDocTemplate(
+        str(pdf_path),
+        pagesize=letter,
+        rightMargin=60, leftMargin=60,
+        topMargin=50, bottomMargin=50,
+    )
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(
+        name="TituloLogs",
+        parent=styles["Title"],
+        fontSize=20,
+        textColor=HexColor("#1a1a2e"),
+        spaceAfter=12,
+    ))
+    styles.add(ParagraphStyle(
+        name="LogInfo",
+        parent=styles["Normal"],
+        fontSize=10,
+        leading=14,
+        spaceAfter=4,
+    ))
+
+    elements = []
+    elements.append(Paragraph("📝 Historial de eventos del flujo", styles["TituloLogs"]))
+    elements.append(Paragraph(f"Generado el {datetime.datetime.now().strftime('%d/%m/%Y %H:%M')}", styles["LogInfo"]))
+    elements.append(Spacer(1, 16))
+
+    # Tabla de logs
+    tabla_logs = [["Tipo", "Mensaje", "Fecha/Hora"]]
+    for log in logs:
+        tipo = log.get("type", "INFO")
+        mensaje = log.get("message", "")
+        fecha = log.get("timestamp", "")
+        tabla_logs.append([tipo, mensaje, fecha])
+
+    t = Table(tabla_logs, colWidths=[1.2*inch, 3.5*inch, 1.5*inch])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), HexColor("#0f3460")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), HexColor("#ffffff")),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("ALIGN", (0, 0), (-1, 0), "CENTER"),
+        ("GRID", (0, 0), (-1, -1), 0.5, HexColor("#cccccc")),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [HexColor("#ffffff"), HexColor("#f8f8f8")]),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 6),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+    ]))
+    elements.append(t)
+
+    doc.build(elements)
+    print(f"   📝 PDF de logs generado: {pdf_path}")
+    return str(pdf_path)
 """
 Agente de Documentación: genera un PDF profesional con la documentación del proyecto.
 """

@@ -1,0 +1,35 @@
+{
+  "contenido_original": "crea una página de ventas de motos",
+  "contexto_acumulado": "crea una página de ventas de motos",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "crea una página de ventas de motos",
+    "resumen_completo": "crea una página de ventas de motos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Cuál es el propósito principal de la aplicación?",
+      "¿Qué tipo de usuarios utilizarán el sistema?",
+      "¿Qué funcionalidades básicas necesitas?",
+      "¿Hay algún requerimiento técnico específico?",
+      "¿Cuál es el alcance del proyecto?"
+    ],
+    "siguiente_paso": "Responde las preguntas para completar el análisis."
+  },
+  "preguntas": [
+    "¿Cuál es el propósito principal de la aplicación?",
+    "¿Qué tipo de usuarios utilizarán el sistema?",
+    "¿Qué funcionalidades básicas necesitas?",
+    "¿Hay algún requerimiento técnico específico?",
+    "¿Cuál es el alcance del proyecto?"
+  ],
+  "ronda": 1,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

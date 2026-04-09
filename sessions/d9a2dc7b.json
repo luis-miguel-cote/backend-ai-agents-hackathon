@@ -1,0 +1,23 @@
+{
+  "contenido_original": "Crear una app web para tareas",
+  "contexto_acumulado": "Crear una app web para tareas",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "Crear una app web para tareas",
+    "resumen_completo": "Crear una app web para tareas",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [],
+    "siguiente_paso": "Continuar con la informacion disponible"
+  },
+  "preguntas": [],
+  "ronda": 1,
+  "listo_para_generar": true,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

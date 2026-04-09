@@ -1,0 +1,33 @@
+{
+  "contenido_original": "Landing Page - Agencia Aduanera  Necesito una landing page para una agencia aduanera en Colombia. La página debe incluir: - Sección de bienvenida con llamada a la acción - Servicios: importación, exportación, asesoría legal - Testimonios de clientes - Formulario de contacto El diseño debe ser moderno, profesional y enfocado en empresas. Colores: azul, blanco y gris Botón principal: \"Solicitar asesoría\"",
+  "contexto_acumulado": "Landing Page - Agencia Aduanera  Necesito una landing page para una agencia aduanera en Colombia. La página debe incluir: - Sección de bienvenida con llamada a la acción - Servicios: importación, exportación, asesoría legal - Testimonios de clientes - Formulario de contacto El diseño debe ser moderno, profesional y enfocado en empresas. Colores: azul, blanco y gris Botón principal: \"Solicitar asesoría\"\n\n--- RESPUESTAS DEL USUARIO ---\nPregunta: ¿Cuál es el objetivo principal (ventas, leads, descarga)?\nRespuesta: leads\nPregunta: ¿Qué acción esperas que haga el usuario?\nRespuesta: pueda ver el servicio que ofrece\nPregunta: ¿Necesitas formulario de contacto o registro?\nRespuesta: si, formulario de contacto para mas informacion\nPregunta: ¿Integración con herramientas de email marketing?\nRespuesta: no",
+  "requerimientos": {
+    "titulo": "Análisis de Landing pages",
+    "resumen": "Landing Page - Agencia Aduanera  Necesito una landing page para una agencia aduanera en Colombia. La página debe incluir: - Sección de bienvenida con llamada a la acción - Servicios: importación, expo",
+    "resumen_completo": "Proyecto: Análisis de Landing pages\nResumen: Landing Page - Agencia Aduanera  Necesito una landing page para una agencia aduanera en Colombia. La página debe incluir: - Sección de bienvenida con llamada a la acción - Servicios: importación, expo\nTipo de página web: Landing pages\n\nPreguntas de definición del problema:\n  - ¿Cuál es el objetivo principal (ventas, leads, descarga)?\n  - ¿Qué acción esperas que haga el usuario?\n  - ¿Necesitas formulario de contacto o registro?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Integración con herramientas de email marketing?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Cuál es el objetivo principal (ventas, leads, descarga)?",
+      "¿Qué acción esperas que haga el usuario?",
+      "¿Necesitas formulario de contacto o registro?",
+      "¿Integración con herramientas de email marketing?"
+    ],
+    "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+  },
+  "preguntas": [
+    "¿Cuál es el objetivo principal (ventas, leads, descarga)?",
+    "¿Qué acción esperas que haga el usuario?",
+    "¿Necesitas formulario de contacto o registro?",
+    "¿Integración con herramientas de email marketing?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": true,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

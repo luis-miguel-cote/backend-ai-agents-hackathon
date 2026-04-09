@@ -1,0 +1,45 @@
+{
+  "contenido_original": "crea un aplicación de vuelos",
+  "contexto_acumulado": "crea un aplicación de vuelos",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "crea un aplicación de vuelos",
+    "resumen_completo": "Proyecto: Proyecto web\nResumen: crea un aplicación de vuelos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "1. ¿Cuál es el nombre oficial de la aplicación web?",
+      "2. ¿La web representa a una aerolínea específica, a un consorcio de aerolíneas, o es una agencia de viajes independiente?",
+      "3. ¿Existe ya un logotipo o identidad visual definida para la marca?",
+      "4. ¿El objetivo principal es solo vender boletos, o también incluye gestión de reservas, check-in online y seguimiento de vuelos?",
+      "5. ¿Los usuarios deben poder: buscar vuelos, comparar precios, seleccionar asientos, agregar servicios adicionales (equipaje, comida), pagar en línea, gestionar reservas y realizar check-in?",
+      "6. ¿La aplicación debe mostrar disponibilidad de vuelos en tiempo real y actualizar precios dinámicamente?",
+      "7. ¿Hay colores corporativos definidos que deban usarse en el diseño?",
+      "8. ¿El estilo debe ser formal/empresarial, moderno/minimalista, o enfocado en usabilidad masiva?",
+      "9. ¿La aplicación manejará datos personales de usuarios, datos de pago y documentación de viaje?",
+      "10. ¿Los usuarios deben crear cuentas e iniciar sesión para realizar reservas?"
+    ],
+    "siguiente_paso": "Responde las preguntas abiertas para completar el análisis."
+  },
+  "preguntas": [
+    "1. ¿Cuál es el nombre oficial de la aplicación web?",
+    "2. ¿La web representa a una aerolínea específica, a un consorcio de aerolíneas, o es una agencia de viajes independiente?",
+    "3. ¿Existe ya un logotipo o identidad visual definida para la marca?",
+    "4. ¿El objetivo principal es solo vender boletos, o también incluye gestión de reservas, check-in online y seguimiento de vuelos?",
+    "5. ¿Los usuarios deben poder: buscar vuelos, comparar precios, seleccionar asientos, agregar servicios adicionales (equipaje, comida), pagar en línea, gestionar reservas y realizar check-in?",
+    "6. ¿La aplicación debe mostrar disponibilidad de vuelos en tiempo real y actualizar precios dinámicamente?",
+    "7. ¿Hay colores corporativos definidos que deban usarse en el diseño?",
+    "8. ¿El estilo debe ser formal/empresarial, moderno/minimalista, o enfocado en usabilidad masiva?",
+    "9. ¿La aplicación manejará datos personales de usuarios, datos de pago y documentación de viaje?",
+    "10. ¿Los usuarios deben crear cuentas e iniciar sesión para realizar reservas?"
+  ],
+  "ronda": 1,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

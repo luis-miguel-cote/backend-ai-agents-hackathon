@@ -1,0 +1,102 @@
+{
+  "contenido_original": "Necesito crear una tienda en línea para vender ropa deportiva. \nQuiero que los clientes puedan buscar productos, agregarlos al carrito y pagar con tarjeta de crédito. \nTambién necesito un panel de administración donde pueda gestionar inventario, pedidos y ofertas. \nLa plataforma debe funcionar en móvil y escritorio, y quiero que sea rápida.",
+  "contexto_acumulado": "Necesito crear una tienda en línea para vender ropa deportiva. \nQuiero que los clientes puedan buscar productos, agregarlos al carrito y pagar con tarjeta de crédito. \nTambién necesito un panel de administración donde pueda gestionar inventario, pedidos y ofertas. \nLa plataforma debe funcionar en móvil y escritorio, y quiero que sea rápida.\n\n--- RESPUESTAS DEL USUARIO ---\nPregunta: ¿Qué tipos de productos o servicios venderás en la tienda?\nRespuesta: Ropa deportiva: camisetas, pantalones, zapatos atléticos. También accesorios como mochilas y cinturones.\nPregunta: ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\nRespuesta: B2C principalmente. Vendo directamente al consumidor final, pero quiero la opción de vender a pequeñas tiendas en el futuro.\nPregunta: ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\nRespuesta: Sí, necesito ambas. Stripe para tarjetas de crédito y PayPal para más opciones de pago.\nPregunta: ¿Cuántos productos manejarás inicialmente?\nRespuesta: Arrancamos con 150 productos SKU. Cada color y talla cuenta como un SKU diferente.",
+  "requerimientos": {
+    "titulo": "Análisis de E-comerce",
+    "resumen": "Necesito crear una tienda en línea para vender ropa deportiva. \nQuiero que los clientes puedan buscar productos, agregarlos al carrito y pagar con tarjeta de crédito. \nTambién necesito un panel de adm",
+    "resumen_completo": "Proyecto: Análisis de E-comerce\nResumen: Necesito crear una tienda en línea para vender ropa deportiva. \nQuiero que los clientes puedan buscar productos, agregarlos al carrito y pagar con tarjeta de crédito. \nTambién necesito un panel de adm\nTipo de página web: E-comerce\n\nPreguntas de definición del problema:\n  - ¿Qué tipos de productos o servicios venderás en la tienda?\n  - ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\n  - ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Cuántos productos manejarás inicialmente?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Qué tipos de productos o servicios venderás en la tienda?",
+      "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+      "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+      "¿Cuántos productos manejarás inicialmente?"
+    ],
+    "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+  },
+  "preguntas": [
+    "¿Qué tipos de productos o servicios venderás en la tienda?",
+    "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+    "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+    "¿Cuántos productos manejarás inicialmente?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": true,
+  "estado_generacion": "completado",
+  "resultado": {
+    "nombre": "proyecto_20260408_121000",
+    "ruta": "proyectos_generados\\proyecto_20260408_121000",
+    "archivos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "tiempos_archivos": {
+      "index.html": 3.479062795639038,
+      "css/styles.css": 3.0523762702941895,
+      "js/main.js": 2.913506269454956,
+      "README.md": 3.3029420375823975
+    },
+    "requerimientos": {
+      "titulo": "Análisis de E-comerce",
+      "resumen": "Necesito crear una tienda en línea para vender ropa deportiva. \nQuiero que los clientes puedan buscar productos, agregarlos al carrito y pagar con tarjeta de crédito. \nTambién necesito un panel de adm",
+      "resumen_completo": "Proyecto: Análisis de E-comerce\nResumen: Necesito crear una tienda en línea para vender ropa deportiva. \nQuiero que los clientes puedan buscar productos, agregarlos al carrito y pagar con tarjeta de crédito. \nTambién necesito un panel de adm\nTipo de página web: E-comerce\n\nPreguntas de definición del problema:\n  - ¿Qué tipos de productos o servicios venderás en la tienda?\n  - ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\n  - ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Cuántos productos manejarás inicialmente?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+      "total_funcionales": 0,
+      "total_no_funcionales": 0,
+      "preguntas_abiertas": [
+        "¿Qué tipos de productos o servicios venderás en la tienda?",
+        "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+        "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+        "¿Cuántos productos manejarás inicialmente?"
+      ],
+      "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+    },
+    "qa": {
+      "verdict": "✅ APTO PARA PRODUCCIÓN",
+      "color": "GREEN",
+      "pass_rate": 88.9,
+      "passed": 8,
+      "failed": 1,
+      "critical_issues": [],
+      "warnings": [],
+      "summary": "Analizados 6 archivos, 9 tests simulados"
+    },
+    "tipo_proyecto": "landing_page"
+  },
+  "progreso": {
+    "fase": "Completado",
+    "porcentaje": 100,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=landing_page, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (3.5s)",
+      "⚙️ Generador: css/styles.css (3.1s)",
+      "⚙️ Generador: js/main.js (2.9s)",
+      "⚙️ Generador: README.md (3.3s)",
+      "🚀 DevOps: generados vercel.json, .env.example",
+      "🔍 QA: ejecutando análisis de calidad... (intento 1)",
+      "🔍 QA: ✅ APTO PARA PRODUCCIÓN — pass rate: 88.9%",
+      "💾 Guardando proyecto en disco...",
+      "🖼️ Assets: descargando imágenes...",
+      "🖼️ Assets: imágenes descargadas",
+      "📄 Documentación: generando PDF...",
+      "📄 Documentación: PDF generado",
+      "📄 LOGS_PIPELINE.pdf generado",
+      "📚 Aprendizaje: ejemplo guardado",
+      "✅ Pipeline completado"
+    ]
+  }
+}

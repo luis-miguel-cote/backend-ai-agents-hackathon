@@ -1,0 +1,105 @@
+{
+  "contenido_original": "crea una página web para una tienda de manzanas",
+  "contexto_acumulado": "crea una página web para una tienda de manzanas\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: ¿Cuál es el propósito principal de la aplicación?\nRespuesta: Aumentar ventas\nPregunta: ¿Qué tipo de usuarios utilizarán el sistema?\nRespuesta: Clientes que esten buscando manzanas frescas\nPregunta: ¿Qué funcionalidades básicas necesitas?\nRespuesta: Compras y reseñas\nPregunta: ¿Hay algún requerimiento técnico específico?\nRespuesta: Que laoagina web sea funcional en celulares y tablets\nPregunta: ¿Cuál es el alcance del proyecto?\nRespuesta: Generar una pagina para gestionar la tienda, evitando generar sistemasde envio o peidos a domicilio",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "crea una página web para una tienda de manzanas",
+    "resumen_completo": "crea una página web para una tienda de manzanas",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Cuál es el propósito principal de la aplicación?",
+      "¿Qué tipo de usuarios utilizarán el sistema?",
+      "¿Qué funcionalidades básicas necesitas?",
+      "¿Hay algún requerimiento técnico específico?",
+      "¿Cuál es el alcance del proyecto?"
+    ],
+    "siguiente_paso": "Responde las preguntas para completar el análisis."
+  },
+  "preguntas": [
+    "¿Cuál es el propósito principal de la aplicación?",
+    "¿Qué tipo de usuarios utilizarán el sistema?",
+    "¿Qué funcionalidades básicas necesitas?",
+    "¿Hay algún requerimiento técnico específico?",
+    "¿Cuál es el alcance del proyecto?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": true,
+  "estado_generacion": "completado",
+  "resultado": {
+    "nombre": "proyecto_20260408_113829",
+    "ruta": "proyectos_generados\\proyecto_20260408_113829",
+    "archivos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "tiempos_archivos": {
+      "index.html": 2.9555742740631104,
+      "css/styles.css": 3.1880877017974854,
+      "js/main.js": 3.2928526401519775,
+      "README.md": 2.8688464164733887
+    },
+    "requerimientos": {
+      "titulo": "Proyecto web",
+      "resumen": "crea una página web para una tienda de manzanas",
+      "resumen_completo": "crea una página web para una tienda de manzanas",
+      "total_funcionales": 0,
+      "total_no_funcionales": 0,
+      "preguntas_abiertas": [
+        "¿Cuál es el propósito principal de la aplicación?",
+        "¿Qué tipo de usuarios utilizarán el sistema?",
+        "¿Qué funcionalidades básicas necesitas?",
+        "¿Hay algún requerimiento técnico específico?",
+        "¿Cuál es el alcance del proyecto?"
+      ],
+      "siguiente_paso": "Responde las preguntas para completar el análisis."
+    },
+    "qa": {
+      "verdict": "✅ APTO PARA PRODUCCIÓN",
+      "color": "GREEN",
+      "pass_rate": 88.9,
+      "passed": 8,
+      "failed": 1,
+      "critical_issues": [],
+      "warnings": [],
+      "summary": "Analizados 6 archivos, 9 tests simulados"
+    },
+    "tipo_proyecto": "landing_page"
+  },
+  "progreso": {
+    "fase": "Completado",
+    "porcentaje": 100,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=landing_page, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (3.0s)",
+      "⚙️ Generador: css/styles.css (3.2s)",
+      "⚙️ Generador: js/main.js (3.3s)",
+      "⚙️ Generador: README.md (2.9s)",
+      "🚀 DevOps: generados vercel.json, .env.example",
+      "🔍 QA: ejecutando análisis de calidad... (intento 1)",
+      "🔍 QA: ✅ APTO PARA PRODUCCIÓN — pass rate: 88.9%",
+      "💾 Guardando proyecto en disco...",
+      "🖼️ Assets: descargando imágenes...",
+      "🖼️ Assets: imágenes descargadas",
+      "📄 Documentación: generando PDF...",
+      "📄 Documentación: PDF generado",
+      "📄 LOGS_PIPELINE.pdf generado",
+      "📚 Aprendizaje: ejemplo guardado",
+      "✅ Pipeline completado"
+    ]
+  }
+}

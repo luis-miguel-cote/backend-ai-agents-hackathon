@@ -1,0 +1,23 @@
+{
+  "contenido_original": "crea una web de adopción de animales callejeros",
+  "contexto_acumulado": "crea una web de adopción de animales callejeros",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "crea una web de adopción de animales callejeros",
+    "resumen_completo": "crea una web de adopción de animales callejeros",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [],
+    "siguiente_paso": "Continuar con la informacion disponible"
+  },
+  "preguntas": [],
+  "ronda": 1,
+  "listo_para_generar": true,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

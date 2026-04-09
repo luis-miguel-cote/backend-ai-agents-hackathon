@@ -1,0 +1,23 @@
+{
+  "contenido_original": "crea un aplicacion de vuelos",
+  "contexto_acumulado": "crea un aplicacion de vuelos",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "crea un aplicacion de vuelos",
+    "resumen_completo": "crea un aplicacion de vuelos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [],
+    "siguiente_paso": "Continuar con la informacion disponible"
+  },
+  "preguntas": [],
+  "ronda": 1,
+  "listo_para_generar": true,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

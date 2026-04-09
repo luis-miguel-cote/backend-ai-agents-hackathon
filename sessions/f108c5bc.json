@@ -1,0 +1,95 @@
+{
+  "contenido_original": "crea una tienda virtual de calzado",
+  "contexto_acumulado": "crea una tienda virtual de calzado",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "crea una tienda virtual de calzado",
+    "resumen_completo": "crea una tienda virtual de calzado",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [],
+    "siguiente_paso": "Continuar con la informacion disponible"
+  },
+  "preguntas": [],
+  "ronda": 1,
+  "listo_para_generar": true,
+  "estado_generacion": "completado",
+  "resultado": {
+    "nombre": "proyecto_20260408_004522",
+    "ruta": "proyectos_generados\\proyecto_20260408_004522",
+    "archivos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "tiempos_archivos": {
+      "index.html": 87.57107329368591,
+      "css/styles.css": 87.9225344657898,
+      "js/main.js": 38.19695019721985,
+      "README.md": 51.742127895355225,
+      "vercel.json": 17.01932191848755,
+      ".env.example": 14.025240182876587
+    },
+    "requerimientos": {
+      "titulo": "Proyecto web",
+      "resumen": "crea una tienda virtual de calzado",
+      "resumen_completo": "crea una tienda virtual de calzado",
+      "total_funcionales": 0,
+      "total_no_funcionales": 0,
+      "preguntas_abiertas": [],
+      "siguiente_paso": "Continuar con la informacion disponible"
+    },
+    "qa": {
+      "verdict": "⚠️  APTO CON OBSERVACIONES",
+      "color": "YELLOW",
+      "pass_rate": 88.9,
+      "passed": 8,
+      "failed": 1,
+      "critical_issues": [],
+      "warnings": [
+        "[index.html] Archivo muy largo (>300 líneas) — considerar refactorización",
+        "[css/styles.css] Archivo muy largo (>300 líneas) — considerar refactorización"
+      ],
+      "summary": "Analizados 6 archivos, 9 tests simulados"
+    },
+    "tipo_proyecto": "landing_page"
+  },
+  "progreso": {
+    "fase": "Completado",
+    "porcentaje": 100,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example",
+      "vercel.json",
+      ".env.example"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=landing_page, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md', 'vercel.json', '.env.example']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (87.6s)",
+      "⚙️ Generador: css/styles.css (87.9s)",
+      "⚙️ Generador: js/main.js (38.2s)",
+      "⚙️ Generador: README.md (51.7s)",
+      "⚙️ Generador: vercel.json (17.0s)",
+      "⚙️ Generador: .env.example (14.0s)",
+      "🚀 DevOps: generados vercel.json, .env.example",
+      "🔍 QA: ejecutando análisis de calidad...",
+      "🔍 QA: ⚠️  APTO CON OBSERVACIONES — pass rate: 88.9%",
+      "💾 Guardando proyecto en disco...",
+      "🖼️ Assets: descargando imágenes...",
+      "🖼️ Assets: imágenes descargadas",
+      "📄 Documentación: generando PDF...",
+      "📄 Documentación: PDF generado",
+      "📚 Aprendizaje: ejemplo guardado",
+      "✅ Pipeline completado"
+    ]
+  }
+}

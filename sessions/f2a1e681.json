@@ -1,0 +1,102 @@
+{
+  "contenido_original": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.",
+  "contexto_acumulado": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.\n\n--- RESPUESTAS DEL USUARIO ---\nPregunta: ¿Cuál es el objetivo principal del sitio web?\nRespuesta: Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.\nPregunta: ¿Qué información o funcionalidades serán prioritarias?\nRespuesta: El usuario pueda analizar acciones con apoyo multiagente.\nPregunta: ¿Para qué tipo de usuarios se diseña?\nRespuesta: Economistas\nPregunta: ¿Hay integraciones o conexiones con otros sistemas?\nRespuesta: No",
+  "requerimientos": {
+    "titulo": "Análisis de Sitios web corporativos",
+    "resumen": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E",
+    "resumen_completo": "Proyecto: Análisis de Sitios web corporativos\nResumen: SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E\nTipo de página web: Sitios web corporativos\n\nPreguntas de definición del problema:\n  - ¿Cuál es el objetivo principal del sitio web?\n  - ¿Qué información o funcionalidades serán prioritarias?\n  - ¿Para qué tipo de usuarios se diseña?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Hay integraciones o conexiones con otros sistemas?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Cuál es el objetivo principal del sitio web?",
+      "¿Qué información o funcionalidades serán prioritarias?",
+      "¿Para qué tipo de usuarios se diseña?",
+      "¿Hay integraciones o conexiones con otros sistemas?"
+    ],
+    "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+  },
+  "preguntas": [
+    "¿Cuál es el objetivo principal del sitio web?",
+    "¿Qué información o funcionalidades serán prioritarias?",
+    "¿Para qué tipo de usuarios se diseña?",
+    "¿Hay integraciones o conexiones con otros sistemas?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": true,
+  "estado_generacion": "completado",
+  "resultado": {
+    "nombre": "proyecto_20260408_122839",
+    "ruta": "proyectos_generados\\proyecto_20260408_122839",
+    "archivos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "tiempos_archivos": {
+      "index.html": 3.579390287399292,
+      "css/styles.css": 3.3071515560150146,
+      "js/main.js": 2.925794839859009,
+      "README.md": 2.9352517127990723
+    },
+    "requerimientos": {
+      "titulo": "Análisis de Sitios web corporativos",
+      "resumen": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E",
+      "resumen_completo": "Proyecto: Análisis de Sitios web corporativos\nResumen: SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E\nTipo de página web: Sitios web corporativos\n\nPreguntas de definición del problema:\n  - ¿Cuál es el objetivo principal del sitio web?\n  - ¿Qué información o funcionalidades serán prioritarias?\n  - ¿Para qué tipo de usuarios se diseña?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Hay integraciones o conexiones con otros sistemas?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+      "total_funcionales": 0,
+      "total_no_funcionales": 0,
+      "preguntas_abiertas": [
+        "¿Cuál es el objetivo principal del sitio web?",
+        "¿Qué información o funcionalidades serán prioritarias?",
+        "¿Para qué tipo de usuarios se diseña?",
+        "¿Hay integraciones o conexiones con otros sistemas?"
+      ],
+      "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+    },
+    "qa": {
+      "verdict": "✅ APTO PARA PRODUCCIÓN",
+      "color": "GREEN",
+      "pass_rate": 88.9,
+      "passed": 8,
+      "failed": 1,
+      "critical_issues": [],
+      "warnings": [],
+      "summary": "Analizados 6 archivos, 9 tests simulados"
+    },
+    "tipo_proyecto": "landing_page"
+  },
+  "progreso": {
+    "fase": "Completado",
+    "porcentaje": 100,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=landing_page, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (3.6s)",
+      "⚙️ Generador: css/styles.css (3.3s)",
+      "⚙️ Generador: js/main.js (2.9s)",
+      "⚙️ Generador: README.md (2.9s)",
+      "🚀 DevOps: generados vercel.json, .env.example",
+      "🔍 QA: ejecutando análisis de calidad... (intento 1)",
+      "🔍 QA: ✅ APTO PARA PRODUCCIÓN — pass rate: 88.9%",
+      "💾 Guardando proyecto en disco...",
+      "🖼️ Assets: descargando imágenes...",
+      "🖼️ Assets: imágenes descargadas",
+      "📄 Documentación: generando PDF...",
+      "📄 Documentación: PDF generado",
+      "📄 LOGS_PIPELINE.pdf generado",
+      "📚 Aprendizaje: ejemplo guardado",
+      "✅ Pipeline completado"
+    ]
+  }
+}

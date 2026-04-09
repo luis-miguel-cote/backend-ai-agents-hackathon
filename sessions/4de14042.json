@@ -1,0 +1,33 @@
+{
+  "contenido_original": "genera una pagina web para una tienda de gorras",
+  "contexto_acumulado": "genera una pagina web para una tienda de gorras",
+  "requerimientos": {
+    "titulo": "Análisis de E-comerce",
+    "resumen": "genera una pagina web para una tienda de gorras",
+    "resumen_completo": "Proyecto: Análisis de E-comerce\nResumen: genera una pagina web para una tienda de gorras\nTipo de página web: E-comerce\n\nPreguntas de definición del problema:\n  - ¿Qué tipos de productos o servicios venderás en la tienda?\n  - ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\n  - ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Cuántos productos manejarás inicialmente?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Qué tipos de productos o servicios venderás en la tienda?",
+      "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+      "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+      "¿Cuántos productos manejarás inicialmente?"
+    ],
+    "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+  },
+  "preguntas": [
+    "¿Qué tipos de productos o servicios venderás en la tienda?",
+    "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+    "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+    "¿Cuántos productos manejarás inicialmente?"
+  ],
+  "ronda": 1,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

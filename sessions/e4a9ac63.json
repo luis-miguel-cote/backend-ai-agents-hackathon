@@ -1,0 +1,105 @@
+{
+  "contenido_original": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.",
+  "contexto_acumulado": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: ¿Cuál es el propósito principal de la aplicación?\nRespuesta: dar soporte\nPregunta: ¿Qué tipo de usuarios utilizarán el sistema?\nRespuesta: personas que estan en el mercado de acciones\nPregunta: ¿Qué funcionalidades básicas necesitas?\nRespuesta: simulación de compra y venta de acciones\nPregunta: ¿Hay algún requerimiento técnico específico?\nRespuesta: estar actualizados en el mercado acconario\nPregunta: ¿Cuál es el alcance del proyecto?\nRespuesta: personas interesadas en el mercado de acciones",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E",
+    "resumen_completo": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Cuál es el propósito principal de la aplicación?",
+      "¿Qué tipo de usuarios utilizarán el sistema?",
+      "¿Qué funcionalidades básicas necesitas?",
+      "¿Hay algún requerimiento técnico específico?",
+      "¿Cuál es el alcance del proyecto?"
+    ],
+    "siguiente_paso": "Responde las preguntas para completar el análisis."
+  },
+  "preguntas": [
+    "¿Cuál es el propósito principal de la aplicación?",
+    "¿Qué tipo de usuarios utilizarán el sistema?",
+    "¿Qué funcionalidades básicas necesitas?",
+    "¿Hay algún requerimiento técnico específico?",
+    "¿Cuál es el alcance del proyecto?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": true,
+  "estado_generacion": "completado",
+  "resultado": {
+    "nombre": "proyecto_20260408_111654",
+    "ruta": "proyectos_generados\\proyecto_20260408_111654",
+    "archivos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "tiempos_archivos": {
+      "index.html": 3.900969982147217,
+      "css/styles.css": 3.5973446369171143,
+      "js/main.js": 3.3944828510284424,
+      "README.md": 3.8649587631225586
+    },
+    "requerimientos": {
+      "titulo": "Proyecto web",
+      "resumen": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. E",
+      "resumen_completo": "SAAS “CONSTRUCTOR DE AGENTES FINANCIEROS” PROMPT SENCILLO\n\n## OBJETIVO DEL DESARROLLO\n\nConstruir una aplicación web tipo SaaS donde:\n\n1. El usuario pueda usar agentes financieros preconstruidos.\n\n2. El usuario pueda crear agentes financieros personalizados.\n\n3. El usuario pueda analizar acciones con apoyo multiagente.\n\n4. El usuario pueda simular compra y venta de acciones.\n\n5. El usuario pueda ver señales, análisis, riesgo, portafolio y ejecución simulada en una interfaz moderna.\n\n6. Todo el sistema pueda presentarse como un SaaS fintech premium y convincente.",
+      "total_funcionales": 0,
+      "total_no_funcionales": 0,
+      "preguntas_abiertas": [
+        "¿Cuál es el propósito principal de la aplicación?",
+        "¿Qué tipo de usuarios utilizarán el sistema?",
+        "¿Qué funcionalidades básicas necesitas?",
+        "¿Hay algún requerimiento técnico específico?",
+        "¿Cuál es el alcance del proyecto?"
+      ],
+      "siguiente_paso": "Responde las preguntas para completar el análisis."
+    },
+    "qa": {
+      "verdict": "✅ APTO PARA PRODUCCIÓN",
+      "color": "GREEN",
+      "pass_rate": 88.9,
+      "passed": 8,
+      "failed": 1,
+      "critical_issues": [],
+      "warnings": [],
+      "summary": "Analizados 6 archivos, 9 tests simulados"
+    },
+    "tipo_proyecto": "landing_page"
+  },
+  "progreso": {
+    "fase": "Completado",
+    "porcentaje": 100,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=landing_page, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (3.9s)",
+      "⚙️ Generador: css/styles.css (3.6s)",
+      "⚙️ Generador: js/main.js (3.4s)",
+      "⚙️ Generador: README.md (3.9s)",
+      "🚀 DevOps: generados vercel.json, .env.example",
+      "🔍 QA: ejecutando análisis de calidad... (intento 1)",
+      "🔍 QA: ✅ APTO PARA PRODUCCIÓN — pass rate: 88.9%",
+      "💾 Guardando proyecto en disco...",
+      "🖼️ Assets: descargando imágenes...",
+      "🖼️ Assets: imágenes descargadas",
+      "📄 Documentación: generando PDF...",
+      "📄 Documentación: PDF generado",
+      "📄 LOGS_PIPELINE.pdf generado",
+      "📚 Aprendizaje: ejemplo guardado",
+      "✅ Pipeline completado"
+    ]
+  }
+}

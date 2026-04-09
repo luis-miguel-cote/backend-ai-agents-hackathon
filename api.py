@@ -27,7 +27,7 @@ from core.arquitecto import agente_arquitecto
 from core.generador import generar_archivo_individual
 from agentes.agente_devops import generate_deployment_files
 from agentes.agente_assets import descargar_imagenes_proyecto
-from agentes.agente_documentacion import generar_documentacion_pdf
+from agentes.agente_documentacion import generar_documentacion_pdf, generar_logs_pdf
 from agentes.agente_requerimientos import analyze_requirements_google, _construir_resultado
 
 from agentes.agente_qa import agente_qa
@@ -425,7 +425,12 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     progreso["logs"].append("📄 Documentación: generando PDF...")
     try:
         generar_documentacion_pdf(estado, ruta_proyecto, veredicto_qa)
-        progreso["logs"].append("📄 Documentación: PDF generado")
+        # Generar PDF de logs al finalizar
+        generar_logs_pdf([
+            {"type": "INFO", "message": log, "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M")} if isinstance(log, str) else log
+            for log in progreso["logs"]
+        ], ruta_proyecto)
+        progreso["logs"].append("📝 PDF de logs generado")
     except Exception as e:
         print(f"   WARNING: Error generando PDF: {e}")
         progreso["logs"].append(f"📄 Documentación: error ({e})")

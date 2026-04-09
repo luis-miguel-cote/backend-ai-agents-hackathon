@@ -1,0 +1,45 @@
+{
+  "contenido_original": "Crear una aplicacion web para gestionar tareas",
+  "contexto_acumulado": "Crear una aplicacion web para gestionar tareas",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "Crear una aplicacion web para gestionar tareas",
+    "resumen_completo": "Proyecto: Proyecto web\nResumen: Crear una aplicacion web para gestionar tareas",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "1.  ¿Cuál es el nombre oficial de la aplicación web?",
+      "2.  ¿La web representa a una persona, a una empresa, a una institución o a una marca?",
+      "3.  ¿Existe ya un logotipo o identidad visual definida?",
+      "4.  ¿Los usuarios principales serán individuos, equipos de trabajo dentro de una empresa, o ambos?",
+      "5.  ¿Las tareas deben poder asignarse a diferentes usuarios, compartirse en proyectos o tableros colaborativos?",
+      "6.  ¿Debe incluir funcionalidades como etiquetas, prioridades (alta, media, baja), fechas de vencimiento y recordatorios?",
+      "7.  ¿La aplicación debe mostrar cambios en las tareas (ej. completada, asignada) en tiempo real para todos los usuarios involucrados?",
+      "8.  ¿Hay colores corporativos o una paleta de colores preferida para la interfaz?",
+      "9.  ¿Debe verse formal y profesional, moderna y minimalista, o vibrante y amigable?",
+      "10. ¿La aplicación manejará datos personales de los usuarios (nombre, email, etc.)?"
+    ],
+    "siguiente_paso": "Responde las preguntas abiertas para completar el análisis."
+  },
+  "preguntas": [
+    "1.  ¿Cuál es el nombre oficial de la aplicación web?",
+    "2.  ¿La web representa a una persona, a una empresa, a una institución o a una marca?",
+    "3.  ¿Existe ya un logotipo o identidad visual definida?",
+    "4.  ¿Los usuarios principales serán individuos, equipos de trabajo dentro de una empresa, o ambos?",
+    "5.  ¿Las tareas deben poder asignarse a diferentes usuarios, compartirse en proyectos o tableros colaborativos?",
+    "6.  ¿Debe incluir funcionalidades como etiquetas, prioridades (alta, media, baja), fechas de vencimiento y recordatorios?",
+    "7.  ¿La aplicación debe mostrar cambios en las tareas (ej. completada, asignada) en tiempo real para todos los usuarios involucrados?",
+    "8.  ¿Hay colores corporativos o una paleta de colores preferida para la interfaz?",
+    "9.  ¿Debe verse formal y profesional, moderna y minimalista, o vibrante y amigable?",
+    "10. ¿La aplicación manejará datos personales de los usuarios (nombre, email, etc.)?"
+  ],
+  "ronda": 1,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

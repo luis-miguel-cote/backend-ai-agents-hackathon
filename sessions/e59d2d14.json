@@ -1,0 +1,45 @@
+{
+  "contenido_original": "Ayudame a desarrollar una pagina web para mi tienda de espejos",
+  "contexto_acumulado": "Ayudame a desarrollar una pagina web para mi tienda de espejos\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: 1.  ¿Cuál es el nombre oficial de la página web (o de la tienda)?\nRespuesta: Espejismo\nPregunta: 2.  ¿La web representa a una persona (ej. artesano), a una empresa o a una marca?\nRespuesta: La web representa una marca\nPregunta: 3.  ¿Existe ya un logotipo o identidad visual definida (colores, tipografía)?\nRespuesta: No\nPregunta: 4.  El objetivo principal de la web es **vender**, pero ¿también quieres **informar** sobre tipos de espejos, cuidados, o **captar contactos** (ej. para cotizaciones personalizadas)?\nRespuesta: El objetivo principal es vender, pero tambien habra informacion detallada sobre cada espejo\nPregunta: 5.  Los usuarios, además de comprar, ¿deberían poder **registrarse**, guardar favoritos, dejar **comentarios/reseñas** en los productos o **descargar** catálogos?\nRespuesta: Los usuarios ademas de comprar deberian poder guardar favoritos, y dejar comentarios\nPregunta: 6.  ¿La página debe mostrar actualizaciones de inventario o estado de pedidos en **tiempo real**?\nRespuesta: No\nPregunta: 7.  ¿Hay **colores corporativos** definidos que deban usarse en la web?\nRespuesta: Si, los colores corporativos son azul cielo y blancos\nPregunta: 8.  ¿El estilo de la web debe verse **moderno y elegante**, **artesanal/bohemio**, **minimalista** o **clásico/lujoso**?\nRespuesta: Minimalista\nPregunta: 9.  ¿La web manejará **datos personales** de clientes (dirección, teléfono) y datos de pago?\nRespuesta: No\nPregunta: 10. ¿Los usuarios deben **iniciar sesión** para comprar, o pueden comprar como invitados?\nRespuesta: No hace falta que los usuarios deban iniciar sesion\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: 1.  ¿Cuál es el nombre oficial de la página web (o de la tienda)?\nRespuesta: Espejismo\nPregunta: 2.  ¿La web representa a una persona (ej. artesano), a una empresa o a una marca?\nRespuesta: Una marca\nPregunta: 3.  ¿Existe ya un logotipo o identidad visual definida (colores, tipografía)?\nRespuesta: No\nPregunta: 4.  El objetivo principal de la web es **vender**, pero ¿también quieres **informar** sobre tipos de espejos, cuidados, o **captar contactos** (ej. para cotizaciones personalizadas)?\nRespuesta: Vender e informar por medio de descripciones detallasdas sobre los espejos\nPregunta: 5.  Los usuarios, además de comprar, ¿deberían poder **registrarse**, guardar favoritos, dejar **comentarios/reseñas** en los productos o **descargar** catálogos?\nRespuesta: No deben registrarse, si pueden guardar favoritos y tambien puden dejar comentarios.\nPregunta: 6.  ¿La página debe mostrar actualizaciones de inventario o estado de pedidos en **tiempo real**?\nRespuesta: No\nPregunta: 7.  ¿Hay **colores corporativos** definidos que deban usarse en la web?\nRespuesta: Si, los colores corporativos son azul cielo y blanco\nPregunta: 8.  ¿El estilo de la web debe verse **moderno y elegante**, **artesanal/bohemio**, **minimalista** o **clásico/lujoso**?\nRespuesta: Minimalista\nPregunta: 9.  ¿La web manejará **datos personales** de clientes (dirección, teléfono) y datos de pago?\nRespuesta: No\nPregunta: 10. ¿Los usuarios deben **iniciar sesión** para comprar, o pueden comprar como invitados?\nRespuesta: No, los usuarios no deben iniciar sesion para comprar",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "Ayudame a desarrollar una pagina web para mi tienda de espejos\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: 1.  ¿Cuál es el nombre oficial de la página web (o de la tienda)?\nRespuesta: Espejismo\nPregunta",
+    "resumen_completo": "Proyecto: Proyecto web\nResumen: Ayudame a desarrollar una pagina web para mi tienda de espejos\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: 1.  ¿Cuál es el nombre oficial de la página web (o de la tienda)?\nRespuesta: Espejismo\nPregunta",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "1.  ¿Cuál es el nombre oficial de la página web?",
+      "2.  ¿La web representa a una persona, a una empresa, a una institución o a una marca?",
+      "3.  ¿Existe ya un logotipo o identidad visual definida?",
+      "4.  ¿Quiere informar, vender, captar contactos, educar o entretener?",
+      "5.  ¿Debe llenar formularios, registrarse, comprar, comentar o descargar archivos?",
+      "6.  ¿La página debe responder a acciones en tiempo real?",
+      "7.  ¿Hay colores corporativos definidos?",
+      "8.  ¿Debe verse formal, moderna, minimalista, juvenil o institucional?",
+      "9.  ¿La web manejará datos personales?",
+      "10. ¿Los usuarios deben iniciar sesión?"
+    ],
+    "siguiente_paso": "Responde las preguntas abiertas para completar el análisis."
+  },
+  "preguntas": [
+    "1.  ¿Cuál es el nombre oficial de la página web?",
+    "2.  ¿La web representa a una persona, a una empresa, a una institución o a una marca?",
+    "3.  ¿Existe ya un logotipo o identidad visual definida?",
+    "4.  ¿Quiere informar, vender, captar contactos, educar o entretener?",
+    "5.  ¿Debe llenar formularios, registrarse, comprar, comentar o descargar archivos?",
+    "6.  ¿La página debe responder a acciones en tiempo real?",
+    "7.  ¿Hay colores corporativos definidos?",
+    "8.  ¿Debe verse formal, moderna, minimalista, juvenil o institucional?",
+    "9.  ¿La web manejará datos personales?",
+    "10. ¿Los usuarios deben iniciar sesión?"
+  ],
+  "ronda": 3,
+  "listo_para_generar": false,
+  "estado_generacion": null,
+  "resultado": null,
+  "progreso": {
+    "fase": "Esperando",
+    "porcentaje": 0,
+    "archivos_listos": []
+  }
+}

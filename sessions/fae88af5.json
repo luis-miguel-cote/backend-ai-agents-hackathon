@@ -1,0 +1,102 @@
+{
+  "contenido_original": "Genera una pagina web para mi tienda de manzanas",
+  "contexto_acumulado": "Genera una pagina web para mi tienda de manzanas\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: ¿Qué tipos de productos o servicios venderás en la tienda?\nRespuesta: Solo manzanas\nPregunta: ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\nRespuesta: Marketplace\nPregunta: ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\nRespuesta: Si\nPregunta: ¿Cuántos productos manejarás inicialmente?\nRespuesta: 2manzanas rojas y verdes",
+  "requerimientos": {
+    "titulo": "Análisis de E-comerce",
+    "resumen": "Genera una pagina web para mi tienda de manzanas",
+    "resumen_completo": "Proyecto: Análisis de E-comerce\nResumen: Genera una pagina web para mi tienda de manzanas\nTipo de página web: E-comerce\n\nPreguntas de definición del problema:\n  - ¿Qué tipos de productos o servicios venderás en la tienda?\n  - ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\n  - ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Cuántos productos manejarás inicialmente?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "¿Qué tipos de productos o servicios venderás en la tienda?",
+      "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+      "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+      "¿Cuántos productos manejarás inicialmente?"
+    ],
+    "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+  },
+  "preguntas": [
+    "¿Qué tipos de productos o servicios venderás en la tienda?",
+    "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+    "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+    "¿Cuántos productos manejarás inicialmente?"
+  ],
+  "ronda": 2,
+  "listo_para_generar": true,
+  "estado_generacion": "completado",
+  "resultado": {
+    "nombre": "proyecto_20260408_115828",
+    "ruta": "proyectos_generados\\proyecto_20260408_115828",
+    "archivos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "tiempos_archivos": {
+      "index.html": 3.205836534500122,
+      "css/styles.css": 3.461688280105591,
+      "js/main.js": 3.3964948654174805,
+      "README.md": 3.3785393238067627
+    },
+    "requerimientos": {
+      "titulo": "Análisis de E-comerce",
+      "resumen": "Genera una pagina web para mi tienda de manzanas",
+      "resumen_completo": "Proyecto: Análisis de E-comerce\nResumen: Genera una pagina web para mi tienda de manzanas\nTipo de página web: E-comerce\n\nPreguntas de definición del problema:\n  - ¿Qué tipos de productos o servicios venderás en la tienda?\n  - ¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?\n  - ¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?\n\nActores identificados:\n  - Usuarios\n\nPreguntas de análisis:\n  - ¿Cuál es el alcance del proyecto?\n  - ¿Cuáles son los requisitos de rendimiento?\n\nPreguntas aclaratorias finales:\n  - ¿Cuántos productos manejarás inicialmente?\n\nSupuestos: Se asume una arquitectura estándar\nRiesgos: Cambios de requerimientos",
+      "total_funcionales": 0,
+      "total_no_funcionales": 0,
+      "preguntas_abiertas": [
+        "¿Qué tipos de productos o servicios venderás en la tienda?",
+        "¿Cuál es tu modelo de negocio: B2C, B2B, marketplace?",
+        "¿Necesitas integración con pasarelas de pago (Stripe, PayPal)?",
+        "¿Cuántos productos manejarás inicialmente?"
+      ],
+      "siguiente_paso": "Por favor responde las preguntas para obtener un análisis más detallado."
+    },
+    "qa": {
+      "verdict": "✅ APTO PARA PRODUCCIÓN",
+      "color": "GREEN",
+      "pass_rate": 88.9,
+      "passed": 8,
+      "failed": 1,
+      "critical_issues": [],
+      "warnings": [],
+      "summary": "Analizados 6 archivos, 9 tests simulados"
+    },
+    "tipo_proyecto": "landing_page"
+  },
+  "progreso": {
+    "fase": "Completado",
+    "porcentaje": 100,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "vercel.json",
+      ".env.example"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=landing_page, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (3.2s)",
+      "⚙️ Generador: css/styles.css (3.5s)",
+      "⚙️ Generador: js/main.js (3.4s)",
+      "⚙️ Generador: README.md (3.4s)",
+      "🚀 DevOps: generados vercel.json, .env.example",
+      "🔍 QA: ejecutando análisis de calidad... (intento 1)",
+      "🔍 QA: ✅ APTO PARA PRODUCCIÓN — pass rate: 88.9%",
+      "💾 Guardando proyecto en disco...",
+      "🖼️ Assets: descargando imágenes...",
+      "🖼️ Assets: imágenes descargadas",
+      "📄 Documentación: generando PDF...",
+      "📄 Documentación: PDF generado",
+      "📄 LOGS_PIPELINE.pdf generado",
+      "📚 Aprendizaje: ejemplo guardado",
+      "✅ Pipeline completado"
+    ]
+  }
+}

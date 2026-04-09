@@ -1,0 +1,65 @@
+{
+  "contenido_original": "Crear una app web para tareas",
+  "contexto_acumulado": "Crear una app web para tareas\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: **P-001**: ¿Se requiere funcionalidad de tareas compartidas o colaborativas?\nRespuesta: Sí, de forma básica.\nLa aplicación permitirá compartir tareas con otros usuarios mediante invitaciones, con permisos simples (ver/editar). No se requiere colaboración en tiempo real para la primera versión.\nPregunta: **P-002**: ¿Debe incluirse integración con servicios de terceros (Google Tasks, Todoist)?\nRespuesta: No en la primera versión.\nLa app funcionará de manera independiente. La integración con servicios externos se considera una mejora futura para versiones avanzadas.\nPregunta: **P-003**: ¿Es necesario soporte para subtareas o dependencias entre tareas?\nRespuesta: Sí, se requiere soporte para subtareas.\nNo es obligatorio manejar dependencias complejas entre tareas (por ejemplo, “no iniciar hasta que otra termine”).\nPregunta: **P-004**: ¿Se requiere exportación/importación de datos (CSV, JSON)?\nRespuesta: Sí.\nLa aplicación permitirá:\n\nExportar tareas a CSV y JSON\nImportar tareas desde CSV\n\nEsto facilita respaldos y migración de información\nPregunta: **P-005**: ¿Debe incluirse analytics de productividad para el usuario?\nRespuesta: Sí, a nivel básico.\nSe incluirán métricas simples como:\n\nTareas completadas por semana/mes\nTareas pendientes\nPorcentaje de cumplimiento\n\nNo se requieren análisis avanzados con IA.\nPregunta: **P-006**: ¿Cuál es el público objetivo principal (estudiantes, profesionales, equipos)?\nRespuesta: El público objetivo principal son estudiantes y profesionales individuales.\nLa app está pensada para uso personal, con opciones mínimas de colaboración.\nPregunta: **P-007**: ¿Existen requisitos específicos de privacidad o regulaciones a cumplir (GDPR)?\nRespuesta: Sí, se tendrán en cuenta principios básicos de privacidad:\n\nProtección de datos personales\nEliminación de cuenta y datos bajo solicitud\nUso de autenticación segura\n\nSe seguirá un enfoque compatible con GDPR a nivel básico, sin certificaciones formales.\nPregunta: **P-008**: ¿Cuál es el presupuesto para hosting y mantenimiento mensual?\nRespuesta: El presupuesto estimado es de USD $5 a $15 mensuales, utilizando:\n\nHosting en la nube económico\nBase de datos gestionada\nServicios gratuitos o planes básicos\nPregunta: **P-009**: ¿Se planea monetización y en qué plazo?\nRespuesta: No en el corto plazo.\nLa app será gratuita inicialmente. A largo plazo (6–12 meses) se podría considerar:\n\nPlan premium con funciones avanzadas\nSin publicidad en la versión gratuita\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: *   **P-A-001:** Para la función de compartir tareas (**RF-004**), ¿cómo se manejará la revocación de permisos o la eliminación de una tarea que está compartida? ¿El invitado pierde acceso inmediatamente?\nRespuesta: La revocación de permisos será inmediata.\nSi el propietario elimina el acceso de un invitado o elimina la tarea compartida:\n\nEl invitado pierde acceso de forma automática\nLa tarea dejará de mostrarse en su lista\nNo se conserva una copia local para el invitado\n\nEsto garantiza consistencia de datos y control total por parte del propietario de la tarea.\nPregunta: *   **P-A-002:** En el panel de analytics (**RF-006**), ¿los gráficos/métricas serán estáticos (pre-calculados) o el usuario podrá aplicar filtros personalizados (por etiquetas, proyectos)?\nRespuesta: Los gráficos serán dinámicos con filtros básicos.\nEl usuario podrá:\n\nFiltrar por rango de fechas\nFiltrar por etiquetas\nFiltrar por listas/proyectos (si existen)\n\nLas métricas se calcularán bajo demanda, pero sin afectar el rendimiento, ya que se trata de análisis simples.\nPregunta: *   **P-A-003:** ¿Existirá el concepto de \"proyectos\" o \"listas\" para agrupar tareas, o la organización será plana con el uso de etiquetas/categorías?\nRespuesta: Sí, existirá el concepto de listas o proyectos.\nLa organización combinará:\n\nListas/Proyectos para una estructura principal\nEtiquetas como método adicional de clasificación transversal\n\nEsto permite flexibilidad sin añadir complejidad excesiva a la interfaz.\nPregunta: *   **P-A-004:** Para la importación de CSV (**RF-005**), ¿se proporcionará una plantilla descargable con el formato exacto requerido?\nRespuesta: Sí.\nLa aplicación proporcionará una plantilla CSV descargable que:\n\nDefine claramente las columnas requeridas (título, descripción, fecha, estado, etc.)\nReduce errores de importación\nFacilita el uso para usuarios sin conocimientos técnicos\n\nAdemás, el sistema validará el archivo antes de completar la importación.",
+  "requerimientos": {
+    "titulo": "Proyecto web",
+    "resumen": "Crear una app web para tareas\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: **P-001**: ¿Se requiere funcionalidad de tareas compartidas o colaborativas?\nRespuesta: Sí, de forma básica.\nLa aplicación permi",
+    "resumen_completo": "Proyecto: Proyecto web\nResumen: Crear una app web para tareas\n\n--- RESPUESTAS ADICIONALES ---\nPregunta: **P-001**: ¿Se requiere funcionalidad de tareas compartidas o colaborativas?\nRespuesta: Sí, de forma básica.\nLa aplicación permi",
+    "total_funcionales": 0,
+    "total_no_funcionales": 0,
+    "preguntas_abiertas": [
+      "- ¿Existe límite en número de usuarios con quienes se puede compartir una tarea?",
+      "- ¿Se permitirá compartir listas completas o solo tareas individuales?",
+      "- ¿Los invitados podrán invitar a otros usuarios (compartición en cadena)?",
+      "- ¿Se implementarán notificaciones push para vencimientos de tareas?",
+      "- ¿Qué tipos de notificaciones por email se enviarán (recordatorios, invitaciones)?",
+      "- ¿Los usuarios podrán configurar frecuencia y tipos de notificaciones?",
+      "- ¿Cuánto tiempo se conservarán los datos de usuarios inactivos?",
+      "- ¿Existirá funcionalidad de archivado automático de tareas antiguas?",
+      "- ¿Se implementará compresión de datos para optimizar almacenamiento?",
+      "- ¿Se requiere soporte para múltiples idiomas en primera versión?"
+    ],
+    "siguiente_paso": "Responde las preguntas abiertas para completar el análisis."
+  },
+  "preguntas": [
+    "- ¿Existe límite en número de usuarios con quienes se puede compartir una tarea?",
+    "- ¿Se permitirá compartir listas completas o solo tareas individuales?",
+    "- ¿Los invitados podrán invitar a otros usuarios (compartición en cadena)?",
+    "- ¿Se implementarán notificaciones push para vencimientos de tareas?",
+    "- ¿Qué tipos de notificaciones por email se enviarán (recordatorios, invitaciones)?",
+    "- ¿Los usuarios podrán configurar frecuencia y tipos de notificaciones?",
+    "- ¿Cuánto tiempo se conservarán los datos de usuarios inactivos?",
+    "- ¿Existirá funcionalidad de archivado automático de tareas antiguas?",
+    "- ¿Se implementará compresión de datos para optimizar almacenamiento?",
+    "- ¿Se requiere soporte para múltiples idiomas en primera versión?"
+  ],
+  "ronda": 3,
+  "listo_para_generar": true,
+  "estado_generacion": "en_progreso",
+  "resultado": null,
+  "progreso": {
+    "fase": "Generado: vercel.json",
+    "porcentaje": 63,
+    "archivos_listos": [
+      "index.html",
+      "css/styles.css",
+      "js/main.js",
+      "README.md",
+      "main.py",
+      "requirements.txt",
+      "vercel.json"
+    ],
+    "logs": [
+      "🧠 Arquitecto: analizando requerimientos...",
+      "🧠 Arquitecto: tipo=web_app, archivos=['index.html', 'css/styles.css', 'js/main.js', 'README.md', 'main.py', 'requirements.txt', 'vercel.json', '.env.example']",
+      "⚙️ Generador: iniciando generación de archivos...",
+      "⚙️ Generador: index.html (88.4s)",
+      "⚙️ Generador: css/styles.css (86.5s)",
+      "⚙️ Generador: js/main.js (32.8s)",
+      "⚙️ Generador: README.md (43.4s)",
+      "⚙️ Generador: main.py (52.2s)",
+      "⚙️ Generador: requirements.txt (4.7s)",
+      "⚙️ Generador: vercel.json (5.2s)"
+    ]
+  }
+}
