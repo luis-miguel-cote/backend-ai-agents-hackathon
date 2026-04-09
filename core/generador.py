@@ -123,6 +123,8 @@ REQUISITO ABSOLUTAMENTE OBLIGATORIO:
 6. NO incluir explicaciones, SOLO el codigo HTML
 7. Diseno MODERNO con paleta de colores atractiva
 8. Incluye clases CSS para todos los elementos
+9. Incluye al menos 3 imágenes usando rutas locales tipo images/banner.jpg
+10. Agrega hero, cards, CTA y sección de contacto
 
 Genera SOLO el HTML:"""
         contenido = _llamar_llm(prompt)
@@ -426,3 +428,38 @@ python -m http.server 8000
 """
 
     return f"# {ruta}\n\n{descripcion[:200]}"
+
+
+def autocorregir_archivos(archivos: dict, diagnostico_qa: dict, descripcion: str, sistema_aprendizaje) -> dict:
+    """
+    Recibe los archivos generados, el diagnóstico de QA y la descripción del proyecto.
+    Devuelve un dict con los archivos corregidos según las recomendaciones del QA.
+    """
+    archivos_corregidos = {}
+    # Si el diagnóstico trae recomendaciones, intentar corregir cada archivo relevante
+    recomendaciones = diagnostico_qa.get("recomendaciones", [])
+    if not recomendaciones:
+        # Si no hay recomendaciones estructuradas, intentar corregir todos los archivos con el mensaje del QA
+        recomendaciones = [diagnostico_qa.get("detalle", "")]
+    for archivo, contenido in archivos.items():
+        prompt = f"""
+Eres un desarrollador experto. Corrige el archivo '{archivo}' para que pase el control de calidad QA.
+
+Diagnóstico QA:
+{diagnostico_qa}
+
+Recomendaciones específicas:
+{chr(10).join(recomendaciones)}
+
+Archivo original:
+{contenido[:2000]}
+
+Descripción del proyecto:
+{descripcion[:500]}
+
+Devuelve SOLO el código corregido, sin explicaciones ni comentarios extra.
+"""
+        nuevo_contenido = llamar_llm(prompt, temperature=0.3, agente="autocorregidor")
+        if nuevo_contenido and len(nuevo_contenido.strip()) > 50:
+            archivos_corregidos[archivo] = nuevo_contenido.strip()
+    return archivos_corregidos

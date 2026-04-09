@@ -1,7 +1,33 @@
-"""
-API REST con FastAPI para el Gemelo Digital.
-Conecta el flujo de generacion de proyectos con el frontend en React.
-"""
+
+# --- Persistencia de sesiones en disco ---
+import json
+from pathlib import Path
+# Carpeta para persistencia de sesiones
+SESSIONS_DIR = Path(__file__).parent / "sessions"
+SESSIONS_DIR.mkdir(exist_ok=True)
+
+def _session_file(session_id):
+    return SESSIONS_DIR / f"{session_id}.json"
+
+def _save_session(session_id, data):
+    with open(_session_file(session_id), "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def _load_session(session_id):
+    fpath = _session_file(session_id)
+    if fpath.exists():
+        with open(fpath, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+def _delete_session(session_id):
+    fpath = _session_file(session_id)
+    if fpath.exists():
+        fpath.unlink()
+
+# Al iniciar, cargar sesiones existentes
+for f in SESSIONS_DIR.glob("*.json"):
+    sid = f.stem
 
 import io
 import time
@@ -11,6 +37,9 @@ import threading
 from pathlib import Path
 from datetime import datetime
 
+
+import logging
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -33,6 +62,12 @@ from agentes.agente_requerimientos import analyze_requirements_google, _construi
 from agentes.agente_qa import agente_qa
 
 # -- Config -------------------------------------------------------------------
+# -- Config -------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+
 CONFIG = config.to_dict()
 sistema_aprendizaje = SistemaAprendizaje(CONFIG)
 
@@ -61,7 +96,9 @@ class IniciarRequest(BaseModel):
     descripcion: str
 
 class ResponderRequest(BaseModel):
-    respuestas: dict  # {"0": "respuesta a pregunta 1", "1": "respuesta a pregunta 2"}
+    respuestas: Optional[dict] = None  # {"0": "respuesta a pregunta 1", "1": "respuesta a pregunta 2"}
+    respuesta: Optional[str] = None
+    pregunta_indice: Optional[int] = None
 
 
 # -- Endpoints ----------------------------------------------------------------
@@ -105,18 +142,13 @@ def iniciar_proyecto(req: IniciarRequest):
         analisis = analyze_requirements_google(contenido)
         resultado_reqs = _construir_resultado(analisis)
     except Exception as e:
-        resultado_reqs = {
-            "titulo": "Proyecto web",
-            "resumen": contenido[:200],
-            "resumen_completo": contenido,
-            "total_funcionales": 0,
-            "total_no_funcionales": 0,
-            "preguntas_abiertas": [],
-            "siguiente_paso": "Continuar con la informacion disponible",
-        }
-        analisis = None
+        # Si aún hay error, generar análisis contextualizado como fallback extremo
+        print(f"Error al analizar requerimientos: {e}")
+        from agentes.agente_requerimientos import _generate_contextual_analysis
+        analisis = _generate_contextual_analysis(contenido)
+        resultado_reqs = _construir_resultado(analisis)
 
-    preguntas = analisis.open_questions if analisis else []
+    preguntas = analisis.open_questions if analisis else resultado_reqs.get("preguntas_abiertas", [])
 
     sesiones[session_id] = {
         "contenido_original": contenido,
@@ -129,19 +161,21 @@ def iniciar_proyecto(req: IniciarRequest):
         "resultado": None,
         "progreso": {"fase": "Esperando", "porcentaje": 0, "archivos_listos": []},
     }
+    _save_session(session_id, sesiones[session_id])
 
     return {
         "session_id": session_id,
         "requerimientos": resultado_reqs,
         "preguntas": preguntas,
         "listo_para_generar": len(preguntas) == 0,
+        "accion": "continuar_flujo" if len(preguntas) == 0 else "siguiente_pregunta",
     }
 
 
 @app.post("/proyecto/{session_id}/responder")
 def responder_preguntas(session_id: str, req: ResponderRequest):
     """Recibe respuestas a las preguntas abiertas y re-analiza."""
-    sesion = sesiones.get(session_id)
+    sesion = sesiones.get(session_id) or _load_session(session_id)
     if not sesion:
         raise HTTPException(status_code=404, detail="Sesion no encontrada")
 
@@ -151,43 +185,95 @@ def responder_preguntas(session_id: str, req: ResponderRequest):
             "requerimientos": sesion["requerimientos"],
             "preguntas": [],
             "listo_para_generar": True,
-            "mensaje": "Maximo de rondas alcanzado",
+            "accion": "continuar_flujo",
+            "mensaje": "Máximo de rondas alcanzado",
         }
 
-    # Enriquecer contexto con respuestas
+    previous_preguntas = sesion.get("preguntas", [])
     partes = []
-    for idx, respuesta in req.respuestas.items():
-        pregunta = sesion["preguntas"][int(idx)] if int(idx) < len(sesion["preguntas"]) else f"Pregunta {idx}"
+
+    if req.respuesta is not None:
+        respuesta = req.respuesta.strip()
+        if respuesta == "":
+            return {
+                "requerimientos": sesion["requerimientos"],
+                "preguntas": sesion.get("preguntas", []),
+                "listo_para_generar": sesion.get("listo_para_generar", False),
+                "accion": "reintentar",
+                "mensaje": "No se detectó respuesta válida. Por favor inténtalo de nuevo.",
+            }
+        index = req.pregunta_indice if req.pregunta_indice is not None else 0
+        pregunta = sesion["preguntas"][index] if 0 <= index < len(sesion.get("preguntas", [])) else f"Pregunta {index}"
         partes.append(f"Pregunta: {pregunta}\nRespuesta: {respuesta}")
+    elif req.respuestas:
+        for idx, respuesta in req.respuestas.items():
+            respuesta_text = str(respuesta).strip()
+            if respuesta_text == "":
+                continue
+            pregunta = sesion["preguntas"][int(idx)] if int(idx) < len(sesion["preguntas"]) else f"Pregunta {idx}"
+            partes.append(f"Pregunta: {pregunta}\nRespuesta: {respuesta_text}")
+
+        if not partes:
+            return {
+                "requerimientos": sesion["requerimientos"],
+                "preguntas": sesion.get("preguntas", []),
+                "listo_para_generar": sesion.get("listo_para_generar", False),
+                "accion": "reintentar",
+                "mensaje": "No se detectaron respuestas válidas. Por favor inténtalo de nuevo.",
+            }
+    else:
+        return {
+            "requerimientos": sesion["requerimientos"],
+            "preguntas": sesion.get("preguntas", []),
+            "listo_para_generar": sesion.get("listo_para_generar", False),
+            "accion": "reintentar",
+            "mensaje": "No se encontró ninguna respuesta. Por favor intenta de nuevo.",
+        }
 
     sesion["contexto_acumulado"] += "\n\n--- RESPUESTAS ADICIONALES ---\n" + "\n".join(partes)
     sesion["ronda"] += 1
 
-    # Re-analizar con contexto enriquecido
+
+    # Re-analizar con contexto enriquecido y ACTUALIZAR SIEMPRE el resultado
     try:
         analisis = analyze_requirements_google(sesion["contexto_acumulado"])
         resultado_reqs = _construir_resultado(analisis)
         preguntas = analisis.open_questions
+        sesion["requerimientos"] = resultado_reqs
+        sesion["preguntas"] = preguntas
+        sesion["listo_para_generar"] = len(preguntas) == 0
     except Exception:
-        resultado_reqs = sesion["requerimientos"]
-        preguntas = []
+        # Si falla, mantener el último resultado válido
+        resultado_reqs = sesion.get("requerimientos", {})
+        preguntas = sesion.get("preguntas", [])
+        sesion["listo_para_generar"] = len(preguntas) == 0
 
-    sesion["requerimientos"] = resultado_reqs
-    sesion["preguntas"] = preguntas
-    sesion["listo_para_generar"] = len(preguntas) == 0
+    sesiones[session_id] = sesion
+    _save_session(session_id, sesion)
+
+    if sesion["listo_para_generar"] or sesion["ronda"] >= 3:
+        accion = "continuar_flujo"
+    elif preguntas == previous_preguntas:
+        # Si las preguntas no cambian tras una ronda, forzar avance y evitar bucle
+        sesion["listo_para_generar"] = True
+        preguntas = []
+        accion = "continuar_flujo"
+    else:
+        accion = "siguiente_pregunta"
 
     return {
         "requerimientos": resultado_reqs,
         "preguntas": preguntas,
         "listo_para_generar": sesion["listo_para_generar"],
         "ronda": sesion["ronda"],
+        "accion": accion,
     }
 
 
 @app.post("/proyecto/{session_id}/generar")
 def generar_proyecto(session_id: str, skip_qa: bool = False):
     """Lanza la generacion completa del proyecto en background."""
-    sesion = sesiones.get(session_id)
+    sesion = sesiones.get(session_id) or _load_session(session_id)
     if not sesion:
         raise HTTPException(status_code=404, detail="Sesion no encontrada")
 
@@ -204,17 +290,22 @@ def generar_proyecto(session_id: str, skip_qa: bool = False):
         except Exception as e:
             sesion["estado_generacion"] = "error"
             sesion["progreso"]["fase"] = f"Error: {str(e)}"
+        finally:
+            sesiones[session_id] = sesion
+            _save_session(session_id, sesion)
 
     thread = threading.Thread(target=_generar, daemon=True)
     thread.start()
 
+    sesiones[session_id] = sesion
+    _save_session(session_id, sesion)
     return {"session_id": session_id, "estado": "en_progreso"}
 
 
 @app.get("/proyecto/{session_id}/estado")
 def estado_proyecto(session_id: str):
     """Polling: devuelve el estado actual de la generacion."""
-    sesion = sesiones.get(session_id)
+    sesion = sesiones.get(session_id) or _load_session(session_id)
     if not sesion:
         raise HTTPException(status_code=404, detail="Sesion no encontrada")
 
@@ -225,7 +316,8 @@ def estado_proyecto(session_id: str):
 
     if sesion["estado_generacion"] == "completado":
         resp["resultado"] = sesion["resultado"]
-
+    sesiones[session_id] = sesion
+    _save_session(session_id, sesion)
     return resp
 
 
@@ -328,7 +420,9 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
         "requerimientos": reqs,
     }
 
+
     # Fase 3: Arquitecto
+    logging.info(f"[PIPELINE] Ejecutando agente: ARQUITECTO para sesión {session_id}")
     progreso["fase"] = "Definiendo arquitectura..."
     progreso["porcentaje"] = 10
     progreso["logs"] = []
@@ -349,7 +443,9 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
 
     progreso["logs"].append(f"🧠 Arquitecto: tipo={estado['tipo_proyecto']}, archivos={estado['archivos_por_generar']}")
 
+
     # Fase 4: Generacion
+    logging.info(f"[PIPELINE] Ejecutando agente: GENERADOR para sesión {session_id}")
     progreso["fase"] = "Generando archivos..."
     progreso["porcentaje"] = 20
     progreso["logs"].append("⚙️ Generador: iniciando generación de archivos...")
@@ -378,7 +474,9 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
         progreso["fase"] = f"Generado: {archivo}"
         progreso["logs"].append(f"⚙️ Generador: {archivo} ({tiempos_archivos[archivo]:.1f}s)")
 
+
     # DevOps
+    logging.info(f"[PIPELINE] Ejecutando agente: DEVOPS para sesión {session_id}")
     progreso["fase"] = "🚀 Generando archivos DevOps..."
     progreso["porcentaje"] = 75
     deploy_files = generate_deployment_files(estado["tipo_proyecto"])
@@ -388,14 +486,44 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     progreso["logs"] = progreso.get("logs", [])
     progreso["logs"].append(f"🚀 DevOps: generados {', '.join(archivos_devops)}")
 
-    # QA
+
+
+    # QA + Ciclo de autocorrección
     veredicto_qa = {"verdict": "SKIPPED", "pass_rate": 0, "color": "YELLOW"}
-    if not skip_qa:
-        progreso["fase"] = "Validando calidad (QA)..."
+    autocorreccion_max = 2
+    autocorreccion_intentos = 0
+    while True:
+        if skip_qa:
+            break
+        logging.info(f"[PIPELINE] Ejecutando agente: QA para sesión {session_id} (intento {autocorreccion_intentos+1})")
+        progreso["fase"] = f"Validando calidad (QA)... (intento {autocorreccion_intentos+1})"
         progreso["porcentaje"] = 80
-        progreso["logs"].append("🔍 QA: ejecutando análisis de calidad...")
+        progreso["logs"].append(f"🔍 QA: ejecutando análisis de calidad... (intento {autocorreccion_intentos+1})")
         veredicto_qa = agente_qa(estado["archivos_generados"], estado["input_usuario"])
         progreso["logs"].append(f"🔍 QA: {veredicto_qa.get('verdict', 'N/A')} — pass rate: {veredicto_qa.get('pass_rate', 0)}%")
+        # Si QA aprueba o es solo advertencia, salir
+        if veredicto_qa.get("color") != "RED":
+            break
+        # Si hay errores y no se ha alcanzado el máximo de intentos, intentar autocorrección
+        if autocorreccion_intentos < autocorreccion_max:
+            autocorreccion_intentos += 1
+            progreso["logs"].append(f"♻️ Autocorrección: intentando corregir archivos según diagnóstico QA (intento {autocorreccion_intentos})")
+            try:
+                from core.generador import autocorregir_archivos
+                archivos_corregidos = autocorregir_archivos(
+                    estado["archivos_generados"],
+                    veredicto_qa,
+                    estado["input_usuario"],
+                    sistema_aprendizaje
+                )
+                estado["archivos_generados"].update(archivos_corregidos)
+                progreso["logs"].append(f"♻️ Autocorrección: archivos corregidos: {list(archivos_corregidos.keys())}")
+            except Exception as e:
+                progreso["logs"].append(f"❌ Error en autocorrección: {e}")
+                break
+        else:
+            progreso["logs"].append("❌ QA: Se alcanzó el máximo de intentos de autocorrección. El usuario debe revisar manualmente.")
+            break
 
     estado["revision_aprobada"] = veredicto_qa.get("color") != "RED"
 
@@ -419,6 +547,7 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     descargar_imagenes_proyecto(ruta_proyecto, estado["input_usuario"])
     progreso["logs"].append("🖼️ Assets: imágenes descargadas")
 
+
     # Documentación PDF
     progreso["fase"] = "Generando documentación PDF..."
     progreso["porcentaje"] = 93
@@ -434,6 +563,15 @@ def _ejecutar_pipeline(session_id: str, skip_qa: bool = False):
     except Exception as e:
         print(f"   WARNING: Error generando PDF: {e}")
         progreso["logs"].append(f"📄 Documentación: error ({e})")
+
+    # PDF de logs del pipeline
+    try:
+        from agentes.agente_log_pdf import generar_log_pdf
+        generar_log_pdf(progreso["logs"], ruta_proyecto)
+        progreso["logs"].append("📄 LOGS_PIPELINE.pdf generado")
+    except Exception as e:
+        print(f"   WARNING: Error generando LOGS_PIPELINE.pdf: {e}")
+        progreso["logs"].append(f"📄 Error generando LOGS_PIPELINE.pdf: {e}")
 
     # Aprendizaje
     sistema_aprendizaje.guardar_ejemplo(estado, ruta_proyecto)
