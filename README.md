@@ -1,4 +1,9 @@
-# Gemelo Digital - Backend API
+# Gemelo Digital – Backend API
+
+## Demo en video
+
+Mira el funcionamiento completo del sistema en este video de YouTube:
+[![Demo en YouTube](https://img.shields.io/badge/Ver%20demo%20en%20YouTube-red?logo=youtube)](https://youtu.be/8BS_5ewmwf0)
 
 Backend con FastAPI que genera proyectos web completos usando agentes de IA. Se conecta con el frontend en React.
 
